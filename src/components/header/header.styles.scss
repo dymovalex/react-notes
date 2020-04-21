@@ -1,0 +1,29 @@
+.header {
+    width: 100vw;
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--green);
+    color: var(--font-light);
+
+    &__logo {
+        font-size: 40px;
+        padding-left: 10px;
+
+        span:nth-child(1) {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        span:nth-child(2) {
+            font-family: 'Shadows Into Light', cursive;
+        }
+    }
+
+    &__sign-in-sign-out {
+        padding-right: 10px;
+        cursor: pointer;
+    }
+
+}

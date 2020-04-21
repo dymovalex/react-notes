@@ -1,0 +1,6 @@
+.content {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    height: calc(100% - var(--header-height) - var(--footer-height));
+    width: auto;
+}
