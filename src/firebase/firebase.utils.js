@@ -14,6 +14,19 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+/*
+export const getNotesRef = async (userId) => {
+    const notesRef = firestore.collection('notes').where('userId', '==', userId);
+    const snapShot = await notesRef.get();
+
+    if (snapShot.empty) {
+        const noteDocRef = firestore.collection('notes').doc();
+        await noteDocRef.set({ userId, title, text });
+        return noteDocRef;
+    } else {
+        return snapShot.docs[0].ref;
+    }
+};*/
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
@@ -23,4 +36,10 @@ const twitterProvider = new firebase.auth.TwitterAuthProvider();
 const githubProvider = new firebase.auth.GithubAuthProvider();
 
 googleProvider.setCustomParameters({ prompt: 'select_account' });
+//twitterProvider.setCustomParameters({ prompt: 'select_account' });
+//githubProvider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
+export const signInWithTwitter = () => auth.signInWithPopup(twitterProvider);
+export const signInWithGithub = () => auth.signInWithPopup(githubProvider);
+
+export default firebase;

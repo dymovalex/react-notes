@@ -1,4 +1,14 @@
 .editor {
     grid-column: 9 span;
+    width: 95%;
 
+    .quill {
+        height: 100%;
+        
+        .ql-container {
+            
+            font-size: 16px;
+        }
+
+    }
 }

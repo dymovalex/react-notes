@@ -5,6 +5,9 @@ import './note.styles.scss';
 const NoteComponent = ({ note }) => {
     return (
         <div className='note'>
+            {/*<div className='note__timpestamp'>
+                <span>{note.createAt.toLocaleString()}</span>
+            </div>*/}
             <div className='note__title'>
                 <h4>{note.title}</h4>
             </div>

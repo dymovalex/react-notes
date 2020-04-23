@@ -6,11 +6,13 @@
     align-items: center;
     background-color: var(--green);
     color: var(--font-light);
-
+    margin-bottom: 10px;
+    
     &__logo {
         font-size: 40px;
         padding-left: 10px;
-
+        cursor: pointer;
+        
         span:nth-child(1) {
             font-weight: bold;
             margin-right: 5px;

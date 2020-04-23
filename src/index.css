@@ -8,6 +8,7 @@
 :root {
     /*** Colors ***/
     --green: #388e3c; /*green*/
+    --green-button: #4caf50;
     --font-light: #e8f5e9; /*green lighten-5*/
 
     /******/
@@ -15,3 +16,8 @@
     --footer-height: 30px;
     --sidebar-width: 300px;
 }
+
+a {
+    text-decoration: none;
+    color: white;
+  }
