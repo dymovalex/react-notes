@@ -12,6 +12,7 @@ class SideBarComponent extends React.Component {
 		this.state = {
 			addingNote: false,
 			newNoteTitle: '',
+			selectedNote: null,
 			notes: [
 				{
 					title: 'Hello',
@@ -29,7 +30,6 @@ class SideBarComponent extends React.Component {
 					title: 'Hello2',
 					text: '&glkokkj',
 				},
-
 			]
 		}
 	}
@@ -80,15 +80,15 @@ class SideBarComponent extends React.Component {
 							</div>
 						</div>)
 						:
-						<div className='buttons-container'>
+						(<div className='buttons-container'>
 							<CustomButton onClick={this.handleClickNewNoteAndCancelButtons}>new note</CustomButton>
-						</div>
+						</div>)
 
 				}
 
 				{
-					this.state.notes.map(note => (
-						<Note note={note} />
+					this.state.notes.map((note, index) => (
+						<Note key={index} note={note} />
 					))
 				}
 			</div>
