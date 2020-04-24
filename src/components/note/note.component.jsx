@@ -4,12 +4,12 @@ import { removeTags } from './note.utils';
 
 import './note.styles.scss';
 
-const NoteComponent = ({ note, selected, index, selectCurrentNote }) => {
+const Note = ({ note, selected, index, selectCurrentNote }) => {
 	return (
 		<div className={`${selected ? 'selected' : ''} note`} onClick={() => selectCurrentNote(index)}>
-			{/*<div className='note__timpestamp'>
+			<div className='note__timestamp'>
 				<span>{note.createAt.toLocaleString()}</span>
-			</div>*/}
+			</div>
 			< div className='note__title' >
 				<h4>{note.title}</h4>
 			</div>
@@ -24,4 +24,4 @@ const NoteComponent = ({ note, selected, index, selectCurrentNote }) => {
 	);
 };
 
-export default NoteComponent;
+export default Note;
