@@ -76,6 +76,7 @@ class SideBarComponent extends React.Component {
 							note={note}
 							selectCurrentNote={this.props.selectCurrentNote}
 							selected={this.props.selectedNoteIndex === index}
+							deleteNote={this.props.deleteNote}
 						/>
 					))
 				}

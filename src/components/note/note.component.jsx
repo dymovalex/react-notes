@@ -4,9 +4,12 @@ import { removeTags } from './note.utils';
 
 import './note.styles.scss';
 
-const Note = ({ note, selected, index, selectCurrentNote }) => {
+const Note = ({ note, selected, index, selectCurrentNote, deleteNote }) => {
 	return (
 		<div className={`${selected ? 'selected' : ''} note`} onClick={() => selectCurrentNote(index)}>
+			<div className='note__delete-icon' onClick={() => deleteNote(index)}>
+				<i className="fas fa-ban"></i>
+			</div>
 			<div className='note__timestamp'>
 				<span>{note.createAt.toLocaleString()}</span>
 			</div>

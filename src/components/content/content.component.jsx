@@ -26,12 +26,12 @@ class ContentComponent extends React.Component {
 				{
 					createAt: new Date('December 17, 1995 03:24:00'),
 					title: 'Another note',
-					text: 'fghh',
+					text: 'some text',
 				},
 				{
 					createAt: new Date('December 17, 1995 03:24:00'),
 					title: 'Hello2',
-					text: '&glkokkj',
+					text: 'more notes!',
 				},
 			],
 			selectedNoteIndex: null,
@@ -75,6 +75,13 @@ class ContentComponent extends React.Component {
 		});
 	}
 
+	deleteNote = noteIndex => {
+		this.setState({
+			notes: [...this.state.notes.slice(0, noteIndex),
+			...this.state.notes.slice(noteIndex + 1)]
+		})
+	}
+
 	render() {
 		return (
 			<div className='content'>
@@ -83,6 +90,7 @@ class ContentComponent extends React.Component {
 					createNewNote={this.createNewNote}
 					notes={this.state.notes}
 					selectedNoteIndex={this.state.selectedNoteIndex}
+					deleteNote={this.deleteNote}
 				/>
 				<Editor
 					notes={this.state.notes}
