@@ -1,25 +1,27 @@
 import React from 'react';
 
+import { removeTags } from './note.utils';
+
 import './note.styles.scss';
 
-const NoteComponent = ({ note }) => {
-    return (
-        <div className='note'>
-            {/*<div className='note__timpestamp'>
-                <span>{note.createAt.toLocaleString()}</span>
-            </div>*/}
-            <div className='note__title'>
-                <h4>{note.title}</h4>
-            </div>
-            <div className='note__text'>
-                <span>{
-                    note.text.length > 40 ?
-                        note.text.slice(0, 40) + '...' :
-                        note.text
-                }</span>
-            </div>
-        </div>
-    );
+const NoteComponent = ({ note, selected, index, selectCurrentNote }) => {
+	return (
+		<div className={`${selected ? 'selected' : ''} note`} onClick={() => selectCurrentNote(index)}>
+			{/*<div className='note__timpestamp'>
+				<span>{note.createAt.toLocaleString()}</span>
+			</div>*/}
+			< div className='note__title' >
+				<h4>{note.title}</h4>
+			</div>
+			<div className='note__text'>
+				<span>{
+					note.text.length > 40 ?
+						removeTags(note.text.slice(0, 40)) + '...' :
+						removeTags(note.text)
+				}</span>
+			</div>
+		</div >
+	);
 };
 
 export default NoteComponent;

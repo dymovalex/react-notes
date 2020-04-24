@@ -5,17 +5,20 @@ import 'react-quill/dist/quill.snow.css';
 
 import './editor.styles.scss';
 
-const EditorComponent = () => {
+const Editor = ({ notes, selectedNoteIndex, updateNoteText }) => {
 	return (
 		<div className='editor'>
 			<div className='editor__title'>
-				<i class="far fa-edit"></i>
-				<span>Hello world!</span>
+				<i className="far fa-edit"></i>
+				<span>{notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}</span>
 				{/*<input type='text'></input>*/}
 			</div>
-			<ReactQuill theme='snow' />
+			<ReactQuill
+				theme='snow'
+				value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].text : ''}
+				onKeyUp={(e) => updateNoteText(e.target.innerHTML)} />
 		</div>
 	);
 };
 
-export default EditorComponent;
+export default Editor;

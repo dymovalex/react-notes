@@ -5,6 +5,11 @@
     padding: 10px;
     transition: all .3s;
     font-size: 16px;
+    cursor: pointer;
+
+    &.selected {
+        background-color: var(--font-light);
+    }
 
     &:hover {
         box-shadow: 2px 4px 16px 0px rgba(0, 0, 0, 0.1);
