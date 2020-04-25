@@ -3,7 +3,7 @@ import React from 'react';
 import Editor from '../../components/editor/editor.component';
 import SideBarComponent from '../../components/sidebar/sidebar.component';
 // eslint-disable-next-line
-import firebase from '../../firebase/firebase.utils';
+import firebase, { getNotes } from '../../firebase/firebase.utils';
 
 import './content.styles.scss';
 
@@ -12,7 +12,7 @@ class ContentComponent extends React.Component {
 		super(props);
 
 		this.state = {
-			notes: [
+			notes: [/*
 				{
 					createAt: new Date('April 17, 2020 03:24:00'),
 					title: 'Hello',
@@ -32,10 +32,17 @@ class ContentComponent extends React.Component {
 					createAt: new Date('December 17, 1995 03:24:00'),
 					title: 'Hello2',
 					text: 'more notes!',
-				},
+				},*/
 			],
 			selectedNoteIndex: null,
 		};
+	}
+
+	async componentDidMount() {
+		const notesFromFirebase = await getNotes();
+		this.setState({
+			notes: notesFromFirebase
+		})
 	}
 
 	createNewNote = note => {

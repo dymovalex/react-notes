@@ -14,19 +14,14 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-/*
-export const getNotesRef = async (userId) => {
-    const notesRef = firestore.collection('notes').where('userId', '==', userId);
-    const snapShot = await notesRef.get();
 
-    if (snapShot.empty) {
-        const noteDocRef = firestore.collection('notes').doc();
-        await noteDocRef.set({ userId, title, text });
-        return noteDocRef;
-    } else {
-        return snapShot.docs[0].ref;
-    }
-};*/
+export const getNotes = async (userId = 'GwOKuaGLNGbFnlk2ppd81VxyUY83') => {
+    const notesCollectionRef = firestore.collection('notes').where('userId', '==', userId);
+    const notesCollectionSnapshot = await notesCollectionRef.get();
+    const notesOfUserSnapshot = await notesCollectionSnapshot.docs[0].ref.get();
+    console.log(notesOfUserSnapshot.data().notesOfUser);
+    return notesOfUserSnapshot.data().notesOfUser;
+};
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
