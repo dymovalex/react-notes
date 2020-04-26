@@ -4,10 +4,11 @@ import './sidebar.styles.scss';
 
 import CustomButton from '../custom-button/custom-button.component';
 import Note from '../note/note.component';
+import Spinner from '../spinner/spinner.component';
 
 class SideBarComponent extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 
 		this.state = {
 			addingNote: false,
@@ -31,7 +32,7 @@ class SideBarComponent extends React.Component {
 		const newNote = {
 			title: this.state.newNoteTitle,
 			text: '',
-			createAt: new Date()
+			createAt: Date.now()
 		}
 
 		this.props.createNewNote(newNote);
@@ -68,8 +69,9 @@ class SideBarComponent extends React.Component {
 
 				}
 
-				{
-					this.props.notes.map((note, index) => (
+				{this.props.notesIsLoading ?
+					<Spinner /> :
+					(this.props.notes.map((note, index) => (
 						<Note
 							key={index}
 							index={index}
@@ -78,7 +80,7 @@ class SideBarComponent extends React.Component {
 							selected={this.props.selectedNoteIndex === index}
 							deleteNote={this.props.deleteNote}
 						/>
-					))
+					)))
 				}
 			</div>
 		);

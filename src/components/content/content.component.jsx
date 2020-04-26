@@ -2,53 +2,45 @@ import React from 'react';
 
 import Editor from '../../components/editor/editor.component';
 import SideBarComponent from '../../components/sidebar/sidebar.component';
-// eslint-disable-next-line
-import firebase, { getNotes } from '../../firebase/firebase.utils';
+
+import { debounce } from '../../components/note/note.utils';
+import { getNotesRef } from '../../firebase/firebase.utils';
 
 import './content.styles.scss';
 
 class ContentComponent extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 
 		this.state = {
-			notes: [/*
-				{
-					createAt: new Date('April 17, 2020 03:24:00'),
-					title: 'Hello',
-					text: 'First note yeeeaahh',
-				},
-				{
-					createAt: new Date('Febrary 17, 2020'),
-					title: 'Second note',
-					text: 'lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
-				},
-				{
-					createAt: new Date('December 17, 1995 03:24:00'),
-					title: 'Another note',
-					text: 'some text',
-				},
-				{
-					createAt: new Date('December 17, 1995 03:24:00'),
-					title: 'Hello2',
-					text: 'more notes!',
-				},*/
-			],
+			notes: [],
 			selectedNoteIndex: null,
+			notesRef: null,
+			notesIsLoading: true,
 		};
 	}
 
 	async componentDidMount() {
-		const notesFromFirebase = await getNotes();
+		const notesRef = await getNotesRef(this.props.currentUser);
+		const notesSnapshot = await notesRef.get();
 		this.setState({
-			notes: notesFromFirebase
-		})
+			notes: notesSnapshot.data().notesOfUser,
+			notesRef,
+			notesIsLoading: false,
+		});
 	}
 
-	createNewNote = note => {
+	updateFirebase = debounce(async () => {
+		console.log('UPDATED!');
+		await this.state.notesRef.update({ notesOfUser: this.state.notes });
+	}, 2000);
+
+	createNewNote = async (note) => {
 		this.setState({
 			notes: [note, ...this.state.notes]
-		})
+		});
+
+		await this.updateFirebase();
 	}
 
 	selectCurrentNote = noteIndex => {
@@ -58,35 +50,41 @@ class ContentComponent extends React.Component {
 		});
 	}
 
-	updateNoteText = (text) => {
+	updateNoteText = async (text) => {
 		this.setState({
 			notes: [...this.state.notes.slice(0, this.state.selectedNoteIndex),
 			{
-				createAt: new Date(),
+				createAt: Date.now(),
 				title: this.state.notes[this.state.selectedNoteIndex].title,
 				text: text
 			},
 			...this.state.notes.slice(this.state.selectedNoteIndex + 1)]
 		});
+
+		await this.updateFirebase();
 	}
 
-	updateNoteTitle = (title) => {
+	updateNoteTitle = async (title) => {
 		this.setState({
 			notes: [...this.state.notes.slice(0, this.state.selectedNoteIndex),
 			{
-				createAt: new Date(),
+				createAt: Date.now(),
 				title: title,
 				text: this.state.notes[this.state.selectedNoteIndex].text
 			},
 			...this.state.notes.slice(this.state.selectedNoteIndex + 1)]
 		});
+
+		await this.updateFirebase();
 	}
 
-	deleteNote = noteIndex => {
+	deleteNote = async (noteIndex) => {
 		this.setState({
 			notes: [...this.state.notes.slice(0, noteIndex),
 			...this.state.notes.slice(noteIndex + 1)]
-		})
+		});
+
+		await this.updateFirebase();
 	}
 
 	render() {
@@ -98,6 +96,7 @@ class ContentComponent extends React.Component {
 					notes={this.state.notes}
 					selectedNoteIndex={this.state.selectedNoteIndex}
 					deleteNote={this.deleteNote}
+					notesIsLoading={this.state.notesIsLoading}
 				/>
 				<Editor
 					notes={this.state.notes}
