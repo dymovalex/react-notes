@@ -45,7 +45,7 @@ class SideBarComponent extends React.Component {
 
 	render() {
 		return (
-			<div className='sidebar'>
+			<div className={`sidebar ${this.props.sidebarIsClosed ? '' : 'open'}`}>
 				{
 					this.state.addingNote ?
 						(<div className='note-creator'>
@@ -71,16 +71,20 @@ class SideBarComponent extends React.Component {
 
 				{this.props.notesIsLoading ?
 					<Spinner /> :
-					(this.props.notes.map((note, index) => (
-						<Note
-							key={index}
-							index={index}
-							note={note}
-							selectCurrentNote={this.props.selectCurrentNote}
-							selected={this.props.selectedNoteIndex === index}
-							deleteNote={this.props.deleteNote}
-						/>
-					)))
+					(<div className='notes-container'>
+						{
+							this.props.notes.map((note, index) => (
+								<Note
+									key={index}
+									index={index}
+									note={note}
+									selectCurrentNote={this.props.selectCurrentNote}
+									selected={this.props.selectedNoteIndex === index}
+									deleteNote={this.props.deleteNote}
+								/>
+							))
+						}
+					</div>)
 				}
 			</div>
 		);

@@ -42,4 +42,23 @@
 			height: calc(100% - 42px);
 		}
 	}
+
+	@media screen and (max-width: 680px) {
+		width: 100%;
+		margin: 0 auto;
+	}
+
+	@media screen and (max-width: 380px) {
+		.quill {
+			.ql-container {
+				height: calc(100% - 66px);
+			}
+		}
+	}
+
+	@media screen and (min-width: 1200px) {
+		& {
+			grid-column: 10 span;
+		}
+	}
 }

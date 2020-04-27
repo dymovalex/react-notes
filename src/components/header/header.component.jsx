@@ -5,9 +5,10 @@ import { auth } from '../../firebase/firebase.utils';
 
 import './header.styles.scss';
 
-const HeaderComponent = ({ currentUser }) => {
+const HeaderComponent = ({ currentUser, toggleSidebar }) => {
 	return (
-		<div className='header'>
+		<div className='header' onClick={() => toggleSidebar()}>
+			<div className='header__bars'><i className="fas fa-bars"></i></div>
 			<Link to='/' className='header__logo'>
 				<span className='header__logo__first'>React</span>
 				<span className='header__logo__second'>Notes</span>

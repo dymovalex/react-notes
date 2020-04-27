@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Editor from '../../components/editor/editor.component';
-import SideBarComponent from '../../components/sidebar/sidebar.component';
+import SideBar from '../../components/sidebar/sidebar.component';
 
 import { debounce, setNotesInLocalStorage } from '../../components/note/note.utils';
 import { getNotesRef } from '../../firebase/firebase.utils';
@@ -23,12 +23,19 @@ class ContentComponent extends React.Component {
 	async componentDidMount() {
 		if (this.props.currentUser) {
 			this.getNotesFromFirebase();
+		} else {
+			this.setState({
+				notesIsLoading: false
+			})
 		}
 	}
 
 	async componentDidUpdate(prevProps) {
 		if (prevProps.currentUser === null && this.props.currentUser) {
 			this.getNotesFromFirebase();
+			this.setState({
+				notesIsLoading: true
+			})
 		} else if (prevProps.currentUser && this.props.currentUser === null) {
 			this.clearState();
 		}
@@ -69,6 +76,9 @@ class ContentComponent extends React.Component {
 	}
 
 	selectCurrentNote = noteIndex => {
+		if (noteIndex === this.state.selectedNoteIndex) {
+			this.props.toggleSidebar();
+		}
 		this.setState({
 			selectedNote: this.state.notes.filter((_, index) => index === noteIndex)[0],
 			selectedNoteIndex: noteIndex
@@ -112,22 +122,17 @@ class ContentComponent extends React.Component {
 		await this.updateFirebase();
 	};
 
-	clearNotes = () => {
-		this.setState({
-			notes: []
-		});
-	}
-
 	render() {
 		return (
 			<div className='content'>
-				<SideBarComponent
+				<SideBar
 					selectCurrentNote={this.selectCurrentNote}
 					createNewNote={this.createNewNote}
 					notes={this.state.notes}
 					selectedNoteIndex={this.state.selectedNoteIndex}
 					deleteNote={this.deleteNote}
 					notesIsLoading={this.state.notesIsLoading}
+					sidebarIsClosed={this.props.sidebarIsClosed}
 				/>
 				<Editor
 					notes={this.state.notes}

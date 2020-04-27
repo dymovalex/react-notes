@@ -8,7 +8,13 @@ const Note = ({ note, selected, index, selectCurrentNote, deleteNote }) => {
 	const createAt = new Date(note.createAt);
 	return (
 		<div className={`${selected ? 'selected' : ''} note`} onClick={() => selectCurrentNote(index)}>
-			<div className='note__delete-icon' onClick={() => deleteNote(index)}>
+			<div
+				className='note__delete-icon'
+				onClick={(e) => {
+					e.stopPropagation();
+					deleteNote(index);
+				}}
+			>
 				<i className="fas fa-ban"></i>
 			</div>
 			<div className='note__timestamp'>

@@ -4,4 +4,10 @@
     height: calc(100% - var(--header-height) - var(--footer-height) - 20px);
     width: auto;
     max-width: 99%;
+    margin: 0 auto;
+
+    @media screen and (max-width: 680px) {
+        display: block;
+        position: relative;
+    }
 }

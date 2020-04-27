@@ -7,6 +7,14 @@
     background-color: var(--green);
     color: var(--font-light);
     margin-bottom: 10px;
+
+    &__bars {
+        display: none;
+        padding-left: 10px;
+        font-size: 30px;
+        width: 70px;
+        text-align: center;
+    }
     
     &__logo {
         font-size: 40px;
@@ -26,6 +34,25 @@
     &__sign-in-sign-out {
         padding-right: 10px;
         cursor: pointer;
+        text-align: center;
     }
 
+    @media screen and (max-width: 680px) {
+        &__bars {
+            display: unset;
+        }
+
+        &__logo {
+            font-size: 35px;
+            padding-left: 0;
+        }
+
+        &__sign-in-sign-out {
+            font-size: 14px;
+
+            span {
+                display: block;
+            }
+        }
+    }
 }

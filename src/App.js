@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Header from './components/header/header.component';
 import Content from './components/content/content.component';
@@ -15,10 +15,16 @@ class App extends React.Component {
 
     this.state = {
       currentUser: null,
-
+      sidebarIsClosed: true,
     };
   }
   unsubscribeFromAuth = null;
+
+  toggleSidebar = () => {
+    this.setState({
+      sidebarIsClosed: !this.state.sidebarIsClosed
+    });
+  }
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -46,17 +52,32 @@ class App extends React.Component {
     this.unsubscribeFromAuth();
   }
 
-  clearApp = () => {
-
-  }
-
   render() {
     return (
       <div className='app-container'>
-        <Header currentUser={this.state.currentUser} />
+        <Header currentUser={this.state.currentUser} toggleSidebar={this.toggleSidebar} />
         <Switch>
-          <Route exact path='/' render={() => <Content currentUser={this.state.currentUser} />} />
-          <Route path='/signin' render={() => <SignIn signInWithGoogle={signInWithGoogle} />} />
+          <Route
+            exact
+            path='/'
+            render={() =>
+              <Content
+                currentUser={this.state.currentUser}
+                sidebarIsClosed={this.state.sidebarIsClosed}
+                toggleSidebar={this.toggleSidebar}
+              />
+            }
+          />
+          <Route
+            path='/signin'
+            render={() =>
+              this.state.currentUser ? (
+                <Redirect to='/' />
+              ) : (
+                  <SignIn signInWithGoogle={signInWithGoogle} />
+                )
+            }
+          />
         </Switch>
       </div>
     );
