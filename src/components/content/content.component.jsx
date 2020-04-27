@@ -3,7 +3,7 @@ import React from 'react';
 import Editor from '../../components/editor/editor.component';
 import SideBarComponent from '../../components/sidebar/sidebar.component';
 
-import { debounce } from '../../components/note/note.utils';
+import { debounce, setNotesInLocalStorage } from '../../components/note/note.utils';
 import { getNotesRef } from '../../firebase/firebase.utils';
 
 import './content.styles.scss';
@@ -13,7 +13,7 @@ class ContentComponent extends React.Component {
 		super();
 
 		this.state = {
-			notes: [],
+			notes: /*JSON.parse(localStorage.getItem('notes')) ||*/[],
 			selectedNoteIndex: null,
 			notesRef: null,
 			notesIsLoading: true,
@@ -21,7 +21,35 @@ class ContentComponent extends React.Component {
 	}
 
 	async componentDidMount() {
-		const notesRef = await getNotesRef(this.props.currentUser);
+		if (this.props.currentUser) {
+			this.getNotesFromFirebase();
+		} else {
+			this.setState({
+				notesIsLoading: false,
+			});
+		}
+	}
+
+	async componentDidUpdate(prevProps) {
+		if ((prevProps.currentUser === null && this.props.currentUser)) {
+			this.getNotesFromFirebase();
+		}
+		if (prevProps.currentUser && this.props.currentUser === null) {
+			this.clearState();
+		}
+	}
+
+	clearState = () => {
+		this.setState({
+			notes: /*JSON.parse(localStorage.getItem('notes')) ||*/[],
+			selectedNoteIndex: null,
+			notesRef: null,
+			notesIsLoading: false,
+		});
+	};
+
+	getNotesFromFirebase = async () => {
+		const notesRef = await getNotesRef(this.props.currentUser.id);
 		const notesSnapshot = await notesRef.get();
 		this.setState({
 			notes: notesSnapshot.data().notesOfUser,
@@ -31,14 +59,16 @@ class ContentComponent extends React.Component {
 	}
 
 	updateFirebase = debounce(async () => {
-		console.log('UPDATED!');
-		await this.state.notesRef.update({ notesOfUser: this.state.notes });
+		if (this.props.currentUser) {
+			console.log('UPDATED!');
+			await this.state.notesRef.update({ notesOfUser: this.state.notes });
+		}
 	}, 2000);
 
 	createNewNote = async (note) => {
 		this.setState({
 			notes: [note, ...this.state.notes]
-		});
+		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	}
@@ -59,7 +89,7 @@ class ContentComponent extends React.Component {
 				text: text
 			},
 			...this.state.notes.slice(this.state.selectedNoteIndex + 1)]
-		});
+		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	}
@@ -73,7 +103,7 @@ class ContentComponent extends React.Component {
 				text: this.state.notes[this.state.selectedNoteIndex].text
 			},
 			...this.state.notes.slice(this.state.selectedNoteIndex + 1)]
-		});
+		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	}
@@ -82,9 +112,15 @@ class ContentComponent extends React.Component {
 		this.setState({
 			notes: [...this.state.notes.slice(0, noteIndex),
 			...this.state.notes.slice(noteIndex + 1)]
-		});
+		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
+	};
+
+	clearNotes = () => {
+		this.setState({
+			notes: []
+		});
 	}
 
 	render() {
@@ -104,6 +140,7 @@ class ContentComponent extends React.Component {
 					createNewNote={this.createNewNote}
 					updateNoteTitle={this.updateNoteTitle}
 					updateNoteText={this.updateNoteText}
+					selectCurrentNote={this.selectCurrentNote}
 				/>
 			</div>
 		);

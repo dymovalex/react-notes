@@ -5,6 +5,7 @@ export const removeTags = text => {
 export const debounce = (fn, time) => {
   let timeout;
   let lastCall;
+
   return function (args) {
     let prevCall = lastCall;
     lastCall = Date.now();
@@ -15,4 +16,8 @@ export const debounce = (fn, time) => {
 
     timeout = setTimeout(() => fn(args), time);
   }
+};
+
+export const setNotesInLocalStorage = (notes) => {
+  localStorage.setItem('notes', JSON.stringify(notes));
 };

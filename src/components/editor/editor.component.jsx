@@ -22,7 +22,7 @@ class Editor extends React.Component {
 	};
 
 	render() {
-		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText } = this.props;
+		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, selectCurrentNote } = this.props;
 
 		return (
 			<div className='editor'>
@@ -33,7 +33,20 @@ class Editor extends React.Component {
 							<input
 								type='text'
 								value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}
-								onChange={(e) => updateNoteTitle(e.target.value)}
+								onChange={(e) => {
+									if (selectedNoteIndex || selectedNoteIndex === 0) {
+										updateNoteTitle(e.target.value);
+									} else {
+										const newNote = {
+											title: e.target.value,
+											text: '',
+											createAt: Date.now()
+										}
+
+										this.props.createNewNote(newNote);
+										selectCurrentNote(0);
+									}
+								}}
 							>
 							</input>
 						</div>)
@@ -46,7 +59,20 @@ class Editor extends React.Component {
 				<ReactQuill
 					theme='snow'
 					value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].text : ''}
-					onKeyUp={(e) => updateNoteText(e.target.innerHTML)} />
+					onKeyUp={(e) => {
+						if (selectedNoteIndex || selectedNoteIndex === 0) {
+							updateNoteText(e.target.innerHTML);
+						} else {
+							const newNote = {
+								title: '',
+								text: e.target.innerHTML,
+								createAt: Date.now()
+							}
+
+							this.props.createNewNote(newNote);
+							selectCurrentNote(0);
+						}
+					}} />
 			</div>
 		);
 	}
