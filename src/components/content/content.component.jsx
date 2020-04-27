@@ -23,18 +23,13 @@ class ContentComponent extends React.Component {
 	async componentDidMount() {
 		if (this.props.currentUser) {
 			this.getNotesFromFirebase();
-		} else {
-			this.setState({
-				notesIsLoading: false,
-			});
 		}
 	}
 
 	async componentDidUpdate(prevProps) {
-		if ((prevProps.currentUser === null && this.props.currentUser)) {
+		if (prevProps.currentUser === null && this.props.currentUser) {
 			this.getNotesFromFirebase();
-		}
-		if (prevProps.currentUser && this.props.currentUser === null) {
+		} else if (prevProps.currentUser && this.props.currentUser === null) {
 			this.clearState();
 		}
 	}

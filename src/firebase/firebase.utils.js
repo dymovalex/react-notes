@@ -28,7 +28,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 		try {
 			await userRef.set({
-				id: userAuth.uid,
 				displayName,
 				email,
 				createAt,
@@ -42,7 +41,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 	return userRef;
 };
 
-export const getNotesRef = async (userId = 'GwOKuaGLNGbFnlk2ppd81VxyUY83') => {
+export const getNotesRef = async (userId) => {
 	try {
 		const notesCollectionRef = firestore.collection('notes').where('userId', '==', userId);
 		const notesCollectionSnapshot = await notesCollectionRef.get();
@@ -53,7 +52,7 @@ export const getNotesRef = async (userId = 'GwOKuaGLNGbFnlk2ppd81VxyUY83') => {
 				userId,
 				notesOfUser: []
 			});
-			return notesOfUserRef
+			return notesOfUserRef;
 		} else {
 			return notesCollectionSnapshot.docs[0].ref;
 		}
