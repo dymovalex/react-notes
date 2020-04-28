@@ -46,13 +46,13 @@ class SignUp extends React.Component {
     }
   };
 
-	handleChange = e => {
-		const { value, name } = e.target;
+  handleChange = e => {
+    const { value, name } = e.target;
 
-		this.setState({
-			[name]: value
-		});
-	};
+    this.setState({
+      [name]: value
+    });
+  };
 
   render() {
     return (
@@ -95,9 +95,17 @@ class SignUp extends React.Component {
           />
         </form>
 
-        <div className='buttons-container'>
+        <div className='sign-up__buttons-container'>
           <CustomButton onClick={this.handleSubmit}>Sign up</CustomButton>
         </div>
+
+        {
+          this.props.mobileView ?
+            (<div className='sign-up__link-to-sign-in'>
+              <span>Do you have an account already? </span>
+              <span onClick={this.props.singInSignUpSwitcher}>Sign in</span>
+            </div>) : null
+        }
       </div>
     );
   }

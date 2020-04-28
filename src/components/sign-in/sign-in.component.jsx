@@ -13,8 +13,8 @@ import {
 import './sign-in.styles.scss';
 
 class SignIn extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			email: '',
@@ -32,7 +32,7 @@ class SignIn extends React.Component {
 				email: '',
 				password: '',
 			});
-			
+
 		} catch (error) {
 			console.log(error);
 		}
@@ -71,11 +71,11 @@ class SignIn extends React.Component {
 					/>
 				</form>
 
-				<div className='buttons-container'>
+				<div className='sign-in__buttons-container'>
 					<CustomButton onClick={this.handleSubmit}>Sign in</CustomButton>
 				</div>
 				<span className='sign-in__description'>Or with one of these accounts</span>
-				<div className='buttons-container'>
+				<div className='sign-in__buttons-container'>
 					<CustomButton googleSignIn onClick={signInWithGoogle}>
 						<i className="fab fa-google"></i>Google
 					</CustomButton>
@@ -86,6 +86,13 @@ class SignIn extends React.Component {
 						<i className="fab fa-github"></i>Github
 					</CustomButton>
 				</div>
+				{
+					this.props.mobileView ?
+						(<div className='sign-in__link-to-sign-up'>
+							<span>Don't you have an account yet? </span>
+							<span onClick={this.props.singInSignUpSwitcher}>Sign up</span>
+						</div>) : null
+				}
 			</div>
 		);
 	}

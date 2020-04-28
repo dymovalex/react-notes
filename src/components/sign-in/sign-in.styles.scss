@@ -1,9 +1,11 @@
+$sub-color: grey;
+$main-color: #212121;
+
 .sign-in {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: calc(100% - var(--header-height) - var(--footer-height));
 	width: auto;
 	color: #212121;
 	text-align: center;
@@ -22,7 +24,7 @@
 		width: 100%;
 	}
 
-	.buttons-container {
+	&__buttons-container {
 		width: 100%;
 		margin: auto;
 		display: flex;
@@ -30,6 +32,20 @@
 
 		& > * {
 			margin: 5px 0;
+		}
+	}
+
+	&__link-to-sign-up {
+		margin-top: 20px;
+
+		span {
+			font-size: 14px;
+			color: $sub-color;
+		}
+
+		span:last-child {
+			cursor: pointer;
+			color: $main-color;
 		}
 	}
 }
