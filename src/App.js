@@ -3,9 +3,9 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Header from './components/header/header.component';
 import Content from './components/content/content.component';
-import SignIn from './components/sign-in/sign-in.component';
+import SignInAndSignUp from './components/sign-in-sign-up/sign-in-sign-up.component';
 
-import { auth, signInWithGoogle, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import './App.scss';
 
@@ -74,7 +74,7 @@ class App extends React.Component {
               this.state.currentUser ? (
                 <Redirect to='/' />
               ) : (
-                  <SignIn signInWithGoogle={signInWithGoogle} />
+                  <SignInAndSignUp />
                 )
             }
           />

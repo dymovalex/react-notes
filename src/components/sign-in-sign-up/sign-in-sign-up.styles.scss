@@ -1,0 +1,11 @@
+.sign-in-and-sign-up {
+  width: 1000px;
+  display: flex;
+  justify-content: space-around;
+  margin: 30px auto;
+
+  @media screen and (max-width: 680px) {
+    width: 70%;
+    flex-direction: column;
+  }
+}

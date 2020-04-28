@@ -70,7 +70,7 @@ const githubProvider = new firebase.auth.GithubAuthProvider();
 
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 //twitterProvider.setCustomParameters({ prompt: 'select_account' });
-//githubProvider.setCustomParameters({ prompt: 'select_account' });
+githubProvider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 export const signInWithTwitter = () => auth.signInWithPopup(twitterProvider);
 export const signInWithGithub = () => auth.signInWithPopup(githubProvider);

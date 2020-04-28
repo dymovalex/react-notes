@@ -5,7 +5,7 @@ import { auth } from '../../firebase/firebase.utils';
 
 import './header.styles.scss';
 
-const HeaderComponent = ({ currentUser, toggleSidebar }) => {
+const Header = ({ currentUser, toggleSidebar }) => {
 	return (
 		<div className='header' onClick={() => toggleSidebar()}>
 			<div className='header__bars'><i className="fas fa-bars"></i></div>
@@ -25,4 +25,4 @@ const HeaderComponent = ({ currentUser, toggleSidebar }) => {
 	);
 };
 
-export default HeaderComponent;
+export default Header;
