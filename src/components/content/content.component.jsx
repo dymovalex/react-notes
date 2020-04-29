@@ -44,7 +44,7 @@ class ContentComponent extends React.Component {
 
 	clearState = () => {
 		this.setState({
-			notes: /*JSON.parse(localStorage.getItem('notes')) ||*/[],
+			notes: [],
 			selectedNoteIndex: null,
 			notesRef: null,
 			notesIsLoading: false,
@@ -63,15 +63,14 @@ class ContentComponent extends React.Component {
 
 	updateFirebase = debounce(async () => {
 		if (this.props.currentUser) {
-			console.log('UPDATED!');
 			await this.state.notesRef.update({ notesOfUser: this.state.notes });
 		}
 	}, 2000);
 
 	createNewNote = async (note) => {
-		this.setState({
-			notes: [note, ...this.state.notes]
-		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
+		this.setState(state => ({
+			notes: [note, ...state.notes]
+		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	}
@@ -80,45 +79,45 @@ class ContentComponent extends React.Component {
 		if (noteIndex === this.state.selectedNoteIndex) {
 			this.props.toggleSidebar();
 		}
-		this.setState({
-			selectedNote: this.state.notes.filter((_, index) => index === noteIndex)[0],
+		this.setState(state => ({
+			selectedNote: state.notes.filter((_, index) => index === noteIndex)[0],
 			selectedNoteIndex: noteIndex
-		});
+		}));
 	}
 
 	updateNoteText = async (text) => {
-		this.setState({
-			notes: [...this.state.notes.slice(0, this.state.selectedNoteIndex),
+		this.setState(state => ({
+			notes: [...state.notes.slice(0, state.selectedNoteIndex),
 			{
 				createAt: Date.now(),
-				title: this.state.notes[this.state.selectedNoteIndex].title,
+				title: state.notes[state.selectedNoteIndex].title,
 				text: text
 			},
-			...this.state.notes.slice(this.state.selectedNoteIndex + 1)]
-		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
+			...state.notes.slice(state.selectedNoteIndex + 1)]
+		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	}
 
 	updateNoteTitle = async (title) => {
-		this.setState({
-			notes: [...this.state.notes.slice(0, this.state.selectedNoteIndex),
+		this.setState(state => ({
+			notes: [...state.notes.slice(0, state.selectedNoteIndex),
 			{
 				createAt: Date.now(),
 				title: title,
-				text: this.state.notes[this.state.selectedNoteIndex].text
+				text: state.notes[state.selectedNoteIndex].text
 			},
-			...this.state.notes.slice(this.state.selectedNoteIndex + 1)]
-		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
+			...state.notes.slice(state.selectedNoteIndex + 1)]
+		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	}
 
 	deleteNote = async (noteIndex) => {
-		this.setState({
-			notes: [...this.state.notes.slice(0, noteIndex),
-			...this.state.notes.slice(noteIndex + 1)]
-		}/*, () => setNotesInLocalStorage(this.state.notes)*/);
+		this.setState(state => ({
+			notes: [...state.notes.slice(0, noteIndex),
+			...state.notes.slice(noteIndex + 1)]
+		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
 
 		await this.updateFirebase();
 	};

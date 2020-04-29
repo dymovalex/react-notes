@@ -1,6 +1,7 @@
 .sidebar {
 	grid-column: 3 span;
 	overflow-y: auto;
+	scroll-behavior: smooth;
 
 	.input-container {
 		width: 90%;

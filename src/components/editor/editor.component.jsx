@@ -21,6 +21,12 @@ class Editor extends React.Component {
 		})
 	};
 
+	handleFocusOnEditor = () => {
+		if (this.state.editingNoteTitle) {
+			this.handleClickEditNoteTitleButton();
+		}
+	};
+
 	render() {
 		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, selectCurrentNote } = this.props;
 
@@ -72,7 +78,9 @@ class Editor extends React.Component {
 							this.props.createNewNote(newNote);
 							selectCurrentNote(0);
 						}
-					}} />
+					}}
+					onFocus={this.handleFocusOnEditor}
+				/>
 			</div>
 		);
 	}

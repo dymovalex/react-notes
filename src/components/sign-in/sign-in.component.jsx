@@ -74,7 +74,7 @@ class SignIn extends React.Component {
 				<div className='sign-in__buttons-container'>
 					<CustomButton onClick={this.handleSubmit}>Sign in</CustomButton>
 				</div>
-				<span className='sign-in__description'>Or with one of these accounts</span>
+				<span className='sign-in__description'>Or use one of your accounts</span>
 				<div className='sign-in__buttons-container'>
 					<CustomButton googleSignIn onClick={signInWithGoogle}>
 						<i className="fab fa-google"></i>Google
