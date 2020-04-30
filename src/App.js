@@ -18,12 +18,13 @@ class App extends React.Component {
       sidebarIsClosed: true,
     };
   }
+
   unsubscribeFromAuth = null;
 
   toggleSidebar = () => {
-    this.setState({
-      sidebarIsClosed: !this.state.sidebarIsClosed
-    });
+    this.setState(state => ({
+      sidebarIsClosed: !state.sidebarIsClosed
+    }));
   }
 
   componentDidMount() {
@@ -42,10 +43,7 @@ class App extends React.Component {
       } else {
         this.setState({ currentUser: userAuth });
       }
-
-
-      console.log(this.state.currentUser);
-    })
+    });
   }
 
   componentWillUnmount() {

@@ -2,9 +2,9 @@ import React from 'react';
 
 import Editor from '../../components/editor/editor.component';
 import SideBar from '../../components/sidebar/sidebar.component';
+
 // eslint-disable-next-line
 import { debounce, setNotesInLocalStorage } from '../../components/note/note.utils';
-
 import { getNotesRef } from '../../firebase/firebase.utils';
 
 import './content.styles.scss';

@@ -13,8 +13,8 @@ import {
 import './sign-in.styles.scss';
 
 class SignIn extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 
 		this.state = {
 			email: '',

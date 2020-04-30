@@ -1,74 +1,69 @@
 .custom-button {
-    width: auto;
-    max-width: 100%;
-    height: 50px;
-    letter-spacing: 0.5px;
-    line-height: 50px;
-    padding: 0 10px;
-    font-size: 15px;
-    text-transform: uppercase;
-    font-weight: bolder;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    color: var(--font-light);
-    background-color: var(--green-button);
-    border-radius: 4px;
-    border: none;
-    flex-grow: 1;
-    outline: none;
+  width: auto;
+  max-width: 100%;
+  height: 50px;
+  letter-spacing: 0.5px;
+  line-height: 50px;
+  padding: 0 10px;
+  font-size: 15px;
+  text-transform: uppercase;
+  font-weight: bolder;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  color: var(--green-bright);
+  background-color: var(--green-lighten);
+  border-radius: 4px;
+  border: none;
+  flex-grow: 1;
+  outline: none;
 
+  &:hover {
+    background-color: var(--green);
+  }
+
+  i {
+    margin: auto 10px;
+  }
+
+  &.google-sign-in {
+    background-color: var(--red);
+    padding-right: 30px;
 
     &:hover {
-        background-color: var(--green);
+      background-color: var(--red-darken);
+      border: none;
     }
+  }
 
-    i {
-        margin: auto 10px;
+  &.twitter-sign-in {
+    background-color: var(--blue);
+    padding-right: 30px;
+
+    &:hover {
+      background-color: var(--blue-darken);
+      border: none;
     }
+  }
 
-    &.google-sign-in {
-        background-color: #d32f2f;
-        color: white;
-        padding-right: 30px;
-    
-        &:hover {
-          background-color: #b71c1c;
-          border: none;
-        }
+  &.github-sign-in {
+    background-color: var(--dark-grey);
+    padding-right: 30px;
+
+    &:hover {
+      background-color: var(--dark-grey-darken);
+      border: none;
     }
+  }
 
-    &.twitter-sign-in {
-        background-color: #2196f3;
-        color: white;
-        padding-right: 30px;
-    
-        &:hover {
-          background-color: #1976d2;
-          border: none;
-        }
+  &.cancel {
+    flex-shrink: 1;
+    flex-grow: 0;
+    margin-right: 5px;
+    background-color: var(--red);
+
+    &:hover {
+      background-color: var(--red-darken);
     }
-
-    &.github-sign-in {
-        background-color: #212121;
-        color: white;
-        padding-right: 30px;
-    
-        &:hover {
-          background-color: #000000;
-          border: none;
-
-        }
-    }
-
-    &.cancel {
-      flex-shrink: 1;
-      flex-grow: 0;
-      margin-right: 5px;
-      background-color: #d32f2f;
-
-      &:hover {
-        background-color: #b71c1c;
-      }
-    }
+  }
 }

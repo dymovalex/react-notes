@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './sidebar.styles.scss';
-
 import CustomButton from '../custom-button/custom-button.component';
 import Note from '../note/note.component';
 import Spinner from '../spinner/spinner.component';
+
+import './sidebar.styles.scss';
 
 class SideBarComponent extends React.Component {
 	constructor() {
@@ -13,13 +13,13 @@ class SideBarComponent extends React.Component {
 		this.state = {
 			addingNote: false,
 			newNoteTitle: '',
-		}
+		};
 	}
 
 	handleClickNewNoteAndCancelButtons = () => {
-		this.setState({
-			addingNote: !this.state.addingNote
-		});
+		this.setState(state => ({
+			addingNote: !state.addingNote
+		}));
 	};
 
 	handleInputChange = e => {
@@ -48,7 +48,7 @@ class SideBarComponent extends React.Component {
 			<div className={`sidebar ${this.props.sidebarIsClosed ? '' : 'open'}`}>
 				{
 					this.state.addingNote ?
-						(<div className='note-creator'>
+						(<React.Fragment>
 							<div className='input-container'>
 								<input
 									type='text'
@@ -58,15 +58,16 @@ class SideBarComponent extends React.Component {
 								</input>
 							</div>
 							<div className='buttons-container'>
-								<CustomButton cancel onClick={this.handleClickNewNoteAndCancelButtons}><i className="fas fa-arrow-left"></i></CustomButton>
+								<CustomButton cancel onClick={this.handleClickNewNoteAndCancelButtons}>
+									<i className="fas fa-arrow-left"></i>
+								</CustomButton>
 								<CustomButton onClick={this.handleSubmit}>submit</CustomButton>
 							</div>
-						</div>)
+						</React.Fragment>)
 						:
 						(<div className='buttons-container'>
 							<CustomButton onClick={this.handleClickNewNoteAndCancelButtons}>new note</CustomButton>
 						</div>)
-
 				}
 
 				{this.props.notesIsLoading ?
@@ -89,7 +90,6 @@ class SideBarComponent extends React.Component {
 			</div>
 		);
 	}
-
 }
 
 export default SideBarComponent;

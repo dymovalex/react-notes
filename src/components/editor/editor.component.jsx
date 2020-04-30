@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 
+import 'react-quill/dist/quill.snow.css';
 import './editor.styles.scss';
 
 class Editor extends React.Component {
@@ -12,13 +12,13 @@ class Editor extends React.Component {
 		this.state = {
 			editingNoteTitle: false,
 			editedTitle: ''
-		}
+		};
 	}
 
 	handleClickEditNoteTitleButton = () => {
-		this.setState({
-			editingNoteTitle: !this.state.editingNoteTitle
-		})
+		this.setState(state => ({
+			editingNoteTitle: !state.editingNoteTitle
+		}))
 	};
 
 	handleFocusOnEditor = () => {

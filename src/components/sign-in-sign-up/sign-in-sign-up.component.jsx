@@ -1,8 +1,9 @@
 import React from 'react';
 
-import './sign-in-sign-up.styles.scss';
 import SignIn from '../sign-in/sign-in.component';
 import SignUp from '../sign-up/sign-up.component';
+
+import './sign-in-sign-up.styles.scss';
 
 class SignInAndSignUp extends React.Component {
   constructor() {
@@ -13,6 +14,7 @@ class SignInAndSignUp extends React.Component {
       signInIsShown: true,
     };
   }
+
   componentDidMount() {
     window.addEventListener('resize', this.handleResize);
     this.handleResize();
@@ -36,9 +38,9 @@ class SignInAndSignUp extends React.Component {
   }
 
   singInSignUpSwitcher = () => {
-    this.setState({
-      signInIsShown: !this.state.signInIsShown
-    });
+    this.setState(state => ({
+      signInIsShown: !state.signInIsShown
+    }));
   }
 
   render() {

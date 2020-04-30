@@ -7,11 +7,11 @@ import './header.styles.scss';
 
 const Header = ({ currentUser, toggleSidebar }) => {
 	return (
-		<div className='header' onClick={() => toggleSidebar()}>
+		<div className='header' onClick={toggleSidebar}>
 			<div className='header__bars'><i className="fas fa-bars"></i></div>
 			<Link to='/' className='header__logo'>
-				<span className='header__logo__first'>React</span>
-				<span className='header__logo__second'>Notes</span>
+				<span>React</span>
+				<span>Notes</span>
 			</Link>
 			<div className='header__sign-in-sign-out'>
 				{
