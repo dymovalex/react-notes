@@ -3,8 +3,7 @@ import React from 'react';
 import Editor from '../../components/editor/editor.component';
 import SideBar from '../../components/sidebar/sidebar.component';
 
-// eslint-disable-next-line
-import { debounce, setNotesInLocalStorage } from '../../components/note/note.utils';
+import { debounce } from '../../components/note/note.utils';
 import { getNotesRef } from '../../firebase/firebase.utils';
 
 import './content.styles.scss';
@@ -72,7 +71,7 @@ class ContentComponent extends React.Component {
 	createNewNote = async (note) => {
 		this.setState(state => ({
 			notes: [note, ...state.notes]
-		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
+		}));
 
 		await this.updateFirebase();
 	}
@@ -96,7 +95,7 @@ class ContentComponent extends React.Component {
 				text: text
 			},
 			...state.notes.slice(state.selectedNoteIndex + 1)]
-		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
+		}));
 
 		await this.updateFirebase();
 	}
@@ -110,7 +109,7 @@ class ContentComponent extends React.Component {
 				text: state.notes[state.selectedNoteIndex].text
 			},
 			...state.notes.slice(state.selectedNoteIndex + 1)]
-		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
+		}));
 
 		await this.updateFirebase();
 	}
@@ -119,7 +118,7 @@ class ContentComponent extends React.Component {
 		this.setState(state => ({
 			notes: [...state.notes.slice(0, noteIndex),
 			...state.notes.slice(noteIndex + 1)]
-		})/*, () => setNotesInLocalStorage(this.state.notes)*/);
+		}));
 
 		await this.updateFirebase();
 	};

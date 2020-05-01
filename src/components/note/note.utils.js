@@ -17,7 +17,3 @@ export const debounce = (fn, time) => {
     timeout = setTimeout(() => fn(args), time);
   }
 };
-
-export const setNotesInLocalStorage = (notes) => {
-  localStorage.setItem('notes', JSON.stringify(notes));
-};
