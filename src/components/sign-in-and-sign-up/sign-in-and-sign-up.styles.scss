@@ -1,0 +1,16 @@
+.sign-in-and-sign-up {
+  width: 1000px;
+  height: calc(100% - var(--header-height) - var(--footer-height) - 20px);
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: 30px;
+  margin: 0 auto;
+  
+  @media screen and (max-width: 910px) {
+    width: 70%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+}
