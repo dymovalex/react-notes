@@ -16,6 +16,68 @@ class SideBarComponent extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		document.addEventListener('keydown', this.handleKeyDown);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('keydown', this.handleKeyDown)
+	}
+
+	handleKeyDown = (e) => {
+		if (this.props.focusOnEditorOrTitleInput) {
+			return;
+		} else {
+			switch (e.key) {
+				case 'Enter':
+					if (this.state.addingNote) {
+						this.handleSubmit();
+					} else {
+						this.handleClickNewNoteAndCancelButtons();
+					}
+					break;
+
+				case 'Escape':
+					if (this.state.addingNote) {
+						this.handleClickNewNoteAndCancelButtons();
+					}
+					break;
+
+				case 'ArrowDown':
+					if (this.props.selectedNoteIndex || this.props.selectedNoteIndex === 0) {
+						if (this.props.selectedNoteIndex + 1 === this.props.notes.length) {
+							this.props.selectCurrentNote(0);
+						} else {
+							this.props.selectCurrentNote(this.props.selectedNoteIndex + 1);
+						}
+					} else {
+						this.props.selectCurrentNote(0);
+					}
+					break;
+				case 'ArrowUp':
+					if (this.props.selectedNoteIndex) {
+						if (this.props.selectedNoteIndex === 0) {
+							this.props.selectCurrentNote(this.props.notes.length - 1);
+						} else {
+							this.props.selectCurrentNote(this.props.selectedNoteIndex - 1);
+						}
+					} else {
+						this.props.selectCurrentNote(this.props.notes.length - 1);
+					}
+					break;
+
+				case 'Delete':
+					if (this.props.selectedNoteIndex || this.props.selectedNoteIndex === 0) {
+						this.props.deleteNote(this.props.selectedNoteIndex);
+					}
+					break;
+
+				default:
+					return null;
+			}
+		}
+	}
+
 	handleClickNewNoteAndCancelButtons = () => {
 		this.setState(state => ({
 			addingNote: !state.addingNote
