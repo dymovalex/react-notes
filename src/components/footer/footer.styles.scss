@@ -1,0 +1,28 @@
+.footer {
+  width: 100%;
+  height: var(--footer-height);
+  background-color: var(--green-lighten);
+	color: var(--green-bright);
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    span {
+      opacity: 1;
+    }
+  }
+  
+  span {
+    display: block;
+    font-size: 10px;
+    opacity: 0;
+    transition: opacity .4s;
+    margin-right: 5px;
+
+    i {
+      font-size: 14px;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Header from './components/header/header.component';
 import Content from './components/content/content.component';
 import SignInAndSignUp from './components/sign-in-sign-up/sign-in-sign-up.component';
+import Footer from './components/footer/footer.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
@@ -77,6 +78,7 @@ class App extends React.Component {
             }
           />
         </Switch>
+        <Footer />
       </div>
     );
   }
