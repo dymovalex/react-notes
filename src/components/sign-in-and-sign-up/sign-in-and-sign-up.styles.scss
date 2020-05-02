@@ -1,7 +1,6 @@
 .sign-in-and-sign-up {
   width: 1000px;
   height: calc(100% - var(--header-height) - var(--footer-height) - 20px);
-  //height: calc(var(--vh, 1vh) * 100 - var(--header-height) - var(--footer-height) - 20px);
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
