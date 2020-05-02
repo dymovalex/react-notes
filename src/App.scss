@@ -1,5 +1,11 @@
 .app-container {
 	height: 100vh;
+	height: calc(var(--vh, 1vh) * 100);
 	width: 100vw;
 	overflow: hidden;
+
+	@media screen and (max-height: 680px) {
+		height: auto;
+		overflow-y: auto;
+	}
 }

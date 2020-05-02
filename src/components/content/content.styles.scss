@@ -1,7 +1,8 @@
 .content {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    height: calc(100% - var(--header-height) - var(--footer-height) - 20px);
+    height: calc(100vh - var(--header-height) - var(--footer-height) - 20px);
+    //height: calc(var(--vh, 1vh) * 100 - var(--header-height) - var(--footer-height) - 20px);
     width: auto;
     max-width: 99%;
     margin: 0 auto;

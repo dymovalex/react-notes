@@ -16,7 +16,7 @@ class App extends React.Component {
 
     this.state = {
       currentUser: null,
-      sidebarIsClosed: true,
+      sidebarIsClosed: false,
     };
   }
 
@@ -44,6 +44,14 @@ class App extends React.Component {
       } else {
         this.setState({ currentUser: userAuth });
       }
+    });
+
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+    window.addEventListener('resize', () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
     });
   }
 
