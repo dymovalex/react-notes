@@ -61,8 +61,8 @@ class Editor extends React.Component {
 							</input>
 						</div>)
 						:
-						(<div className='editor__title'>
-							<i className="far fa-edit" onClick={this.handleClickEditNoteTitleButton}></i>
+						(<div className='editor__title' onClick={this.handleClickEditNoteTitleButton}>
+							<i className="far fa-edit"></i>
 							<span>{notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}</span>
 						</div>)
 				}
