@@ -22,7 +22,7 @@ class Editor extends React.Component {
 	};
 
 	handleFocusOnEditor = () => {
-		this.props.setFocusOnEditorOrTitleInput(true);
+		//this.props.setFocusOnEditorOrTitleInput(true);
 
 		if (this.state.editingNoteTitle) {
 			this.handleClickEditNoteTitleButton();
@@ -56,7 +56,7 @@ class Editor extends React.Component {
 									}
 								}}
 								onFocus={() => setFocusOnEditorOrTitleInput(true)}
-								onBlur={() => setFocusOnEditorOrTitleInput(false)}
+								//onBlur={() => setFocusOnEditorOrTitleInput(false)}
 							>
 							</input>
 						</div>)
@@ -84,11 +84,12 @@ class Editor extends React.Component {
 						}
 					}}
 					onFocus={this.handleFocusOnEditor}
-					onBlur={() => setFocusOnEditorOrTitleInput(false)}
+					//onBlur={() => setFocusOnEditorOrTitleInput(false)}
 				/>
 			</div>
 		);
 	}
 };
+
 
 export default Editor;
