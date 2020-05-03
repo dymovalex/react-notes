@@ -31,13 +31,8 @@
 	font-family: 'Roboto', sans-serif;
 }
 
-html {
-	height: 100%;
-}
-
 body {
 	color: var(--dark-grey);
-	height: 100%;
 }
 
 a {
