@@ -14,8 +14,6 @@ class Content extends React.Component {
 		super();
 
 		this.state = {
-			notes: [],
-			selectedNoteIndex: null,
 			notesRef: null,
 			notesIsLoading: true,
 		};
@@ -67,88 +65,22 @@ class Content extends React.Component {
 		}
 	}, 2000);
 
-	createNewNote = async (note) => {
-		this.setState(state => ({
-			notes: [note, ...state.notes]
-		}));
-
-		await this.updateFirebase();
-	}
-
-	selectCurrentNote = noteIndex => {
-		if (noteIndex === this.state.selectedNoteIndex) {
-			this.props.toggleSidebar();
-		}
-		this.setState(state => ({
-			selectedNote: state.notes.filter((_, index) => index === noteIndex)[0],
-			selectedNoteIndex: noteIndex
-		}));
-	}
-
-	updateNoteText = async (text) => {
-		this.setState(state => ({
-			notes: [...state.notes.slice(0, state.selectedNoteIndex),
-			{
-				createAt: Date.now(),
-				title: state.notes[state.selectedNoteIndex].title,
-				text: text
-			},
-			...state.notes.slice(state.selectedNoteIndex + 1)]
-		}));
-
-		await this.updateFirebase();
-	}
-
-	updateNoteTitle = async (title) => {
-		this.setState(state => ({
-			notes: [...state.notes.slice(0, state.selectedNoteIndex),
-			{
-				createAt: Date.now(),
-				title: title,
-				text: state.notes[state.selectedNoteIndex].text
-			},
-			...state.notes.slice(state.selectedNoteIndex + 1)]
-		}));
-
-		await this.updateFirebase();
-	}
-
-	deleteNote = async (noteIndex) => {
-		this.setState(state => ({
-			notes: [...state.notes.slice(0, noteIndex),
-			...state.notes.slice(noteIndex + 1)]
-		}));
-
-		await this.updateFirebase();
-	};
-
 	render() {
 		return (
 			<div className='content'>
 				<SideBar
-					selectCurrentNote={this.selectCurrentNote}
-					createNewNote={this.createNewNote}
-					notes={this.state.notes}
-					selectedNoteIndex={this.state.selectedNoteIndex}
-					deleteNote={this.deleteNote}
 					notesIsLoading={this.state.notesIsLoading}
 					sidebarIsClosed={this.props.sidebarIsClosed}
 				/>
-				<Editor
-					notes={this.state.notes}
-					selectedNoteIndex={this.state.selectedNoteIndex}
-					createNewNote={this.createNewNote}
-					updateNoteTitle={this.updateNoteTitle}
-					updateNoteText={this.updateNoteText}
-					selectCurrentNote={this.selectCurrentNote}
-				/>
+				<Editor />
 			</div>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	currentUser: state.user.currentUser
+	currentUser: state.user.currentUser,
+	notes: state.notebook.notes,
 });
 
 export default connect(mapStateToProps)(Content);

@@ -8,26 +8,14 @@ import SignInAndSignUp from './components/sign-in-and-sign-up/sign-in-and-sign-u
 import Footer from './components/footer/footer.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { setCurrentUser } from './redux/user/user.actions';
 
 import './App.scss';
 
+import { setCurrentUser } from './redux/user/user.actions';
+import { toggleSidebar } from './redux/sidebar/sidebar.actions';
+
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      sidebarIsClosed: false,
-    };
-  }
-
   unsubscribeFromAuth = null;
-
-  toggleSidebar = () => {
-    this.setState(state => ({
-      sidebarIsClosed: !state.sidebarIsClosed
-    }));
-  }
 
   componentDidMount() {
     const { setCurrentUser } = this.props;
@@ -52,11 +40,11 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, sidebarIsClosed, toggleSidebar } = this.props;
 
     return (
       <div className='app-container'>
-        <Header toggleSidebar={this.toggleSidebar} />
+        <Header toggleSidebar={toggleSidebar} />
         <Switch>
           <Route
             exact
@@ -64,8 +52,8 @@ class App extends React.Component {
             render={() =>
               <Content
                 currentUser={currentUser}
-                sidebarIsClosed={this.state.sidebarIsClosed}
-                toggleSidebar={this.toggleSidebar}
+                sidebarIsClosed={sidebarIsClosed}
+                toggleSidebar={toggleSidebar}
               />
             }
           />
@@ -86,12 +74,14 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = ({ user, sidebar }) => ({
+  currentUser: user.currentUser,
+  sidebarIsClosed: sidebar.isClosed,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  setCurrentUser: user => dispatch(setCurrentUser(user)),
+  toggleSidebar: () => dispatch(toggleSidebar()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

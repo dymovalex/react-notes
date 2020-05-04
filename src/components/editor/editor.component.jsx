@@ -1,9 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import ReactQuill from 'react-quill';
 
 import 'react-quill/dist/quill.snow.css';
 import './editor.styles.scss';
+
+import { createNewNote, selectCurrentNote, updateNoteTitle, updateNoteText } from '../../redux/notebook/notebook.actions';
 
 class Editor extends React.Component {
 	constructor() {
@@ -28,7 +31,7 @@ class Editor extends React.Component {
 	};
 
 	render() {
-		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, selectCurrentNote } = this.props;
+		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, createNewNote, selectCurrentNote } = this.props;
 
 		return (
 			<div className='editor'>
@@ -48,9 +51,9 @@ class Editor extends React.Component {
 											title: e.target.value,
 											text: '',
 											createAt: Date.now()
-										}
+										};
 
-										this.props.createNewNote(newNote);
+										createNewNote(newNote);
 										selectCurrentNote(0);
 									}
 								}}
@@ -102,6 +105,18 @@ Editor.modules = {
 	clipboard: {
 		matchVisual: false,
 	}
-}
+};
 
-export default Editor;
+const mapStateToProps = ({ notebook }) => ({
+	notes: notebook.notes,
+	selectedNoteIndex: notebook.selectedNoteIndex
+});
+
+const mapDispatchToProps = dispatch => ({
+	createNewNote: note => dispatch(createNewNote(note)),
+	selectCurrentNote: noteIndex => dispatch(selectCurrentNote(noteIndex)),
+	updateNoteTitle: title => dispatch(updateNoteTitle(title)),
+	updateNoteText: title => dispatch(updateNoteText(title)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor);
