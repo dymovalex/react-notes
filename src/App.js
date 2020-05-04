@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Header from './components/header/header.component';
 import Content from './components/content/content.component';
@@ -7,6 +8,7 @@ import SignInAndSignUp from './components/sign-in-and-sign-up/sign-in-and-sign-u
 import Footer from './components/footer/footer.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { setCurrentUser } from './redux/user/user.actions';
 
 import './App.scss';
 
@@ -15,7 +17,6 @@ class App extends React.Component {
     super();
 
     this.state = {
-      currentUser: null,
       sidebarIsClosed: false,
     };
   }
@@ -29,20 +30,19 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapshot => {
-          this.setState({
-            currentUser: {
-              id: snapshot.id,
-              ...snapshot.data()
-            }
+          setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data()
           });
         })
       } else {
-        this.setState({ currentUser: userAuth });
+        setCurrentUser(userAuth);
       }
     });
   }
@@ -52,16 +52,18 @@ class App extends React.Component {
   }
 
   render() {
+    const { currentUser } = this.props;
+
     return (
       <div className='app-container'>
-        <Header currentUser={this.state.currentUser} toggleSidebar={this.toggleSidebar} />
+        <Header toggleSidebar={this.toggleSidebar} />
         <Switch>
           <Route
             exact
             path='/'
             render={() =>
               <Content
-                currentUser={this.state.currentUser}
+                currentUser={currentUser}
                 sidebarIsClosed={this.state.sidebarIsClosed}
                 toggleSidebar={this.toggleSidebar}
               />
@@ -70,7 +72,7 @@ class App extends React.Component {
           <Route
             path='/signin'
             render={() =>
-              this.state.currentUser ? (
+              currentUser ? (
                 <Redirect to='/' />
               ) : (
                   <SignInAndSignUp />
@@ -84,4 +86,12 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

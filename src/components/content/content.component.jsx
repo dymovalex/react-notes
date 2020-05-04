@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Editor from '../../components/editor/editor.component';
 import SideBar from '../../components/sidebar/sidebar.component';
@@ -8,7 +9,7 @@ import { getNotesRef } from '../../firebase/firebase.utils';
 
 import './content.styles.scss';
 
-class ContentComponent extends React.Component {
+class Content extends React.Component {
 	constructor() {
 		super();
 
@@ -146,4 +147,8 @@ class ContentComponent extends React.Component {
 	}
 }
 
-export default ContentComponent;
+const mapStateToProps = state => ({
+	currentUser: state.user.currentUser
+});
+
+export default connect(mapStateToProps)(Content);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { auth } from '../../firebase/firebase.utils';
 
@@ -31,4 +32,8 @@ const Header = ({ currentUser, toggleSidebar, history }) => {
 	);
 };
 
-export default withRouter(Header);
+const mapStateToProps = state => ({
+	currentUser: state.user.currentUser
+});
+
+export default connect(mapStateToProps)(withRouter(Header));
