@@ -65,6 +65,7 @@ class Editor extends React.Component {
 				}
 				<ReactQuill
 					theme='snow'
+					modules={Editor.modules}
 					value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].text : ''}
 					onKeyUp={(e) => {
 						if (selectedNoteIndex || selectedNoteIndex === 0) {
@@ -87,5 +88,20 @@ class Editor extends React.Component {
 	}
 };
 
+Editor.modules = {
+	toolbar: [
+		[{ size: [] }, { 'font': [] }],
+		['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }],
+		['blockquote', 'code-block'],
+		[{ 'color': [] }, { 'background': [] }],
+		[{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+		['image'],
+		[{ 'align': [] }],
+		['clean']
+	],
+	clipboard: {
+		matchVisual: false,
+	}
+}
 
 export default Editor;
