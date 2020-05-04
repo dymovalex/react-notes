@@ -22,15 +22,13 @@ class Editor extends React.Component {
 	};
 
 	handleFocusOnEditor = () => {
-		//this.props.setFocusOnEditorOrTitleInput(true);
-
 		if (this.state.editingNoteTitle) {
 			this.handleClickEditNoteTitleButton();
 		}
 	};
 
 	render() {
-		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, selectCurrentNote, setFocusOnEditorOrTitleInput } = this.props;
+		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, selectCurrentNote } = this.props;
 
 		return (
 			<div className='editor'>
@@ -39,6 +37,7 @@ class Editor extends React.Component {
 						(<div className='editor__title'>
 							<i className="far fa-check-square" onClick={this.handleClickEditNoteTitleButton}></i>
 							<input
+								className='editor__title__input'
 								type='text'
 								value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}
 								onChange={(e) => {
@@ -55,8 +54,6 @@ class Editor extends React.Component {
 										selectCurrentNote(0);
 									}
 								}}
-								onFocus={() => setFocusOnEditorOrTitleInput(true)}
-								//onBlur={() => setFocusOnEditorOrTitleInput(false)}
 							>
 							</input>
 						</div>)
@@ -84,7 +81,6 @@ class Editor extends React.Component {
 						}
 					}}
 					onFocus={this.handleFocusOnEditor}
-					//onBlur={() => setFocusOnEditorOrTitleInput(false)}
 				/>
 			</div>
 		);

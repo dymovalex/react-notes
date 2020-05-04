@@ -17,7 +17,6 @@ class ContentComponent extends React.Component {
 			selectedNoteIndex: null,
 			notesRef: null,
 			notesIsLoading: true,
-			focusOnEditorOrTitleInput: false,
 		};
 	}
 
@@ -48,7 +47,6 @@ class ContentComponent extends React.Component {
 			selectedNoteIndex: null,
 			notesRef: null,
 			notesIsLoading: false,
-			focusOnEditorOrTitleInput: false,
 		});
 	};
 
@@ -123,12 +121,6 @@ class ContentComponent extends React.Component {
 		await this.updateFirebase();
 	};
 
-	setFocusOnEditorOrTitleInput = (value) => {
-		this.setState({
-			focusOnEditorOrTitleInput: value
-		});
-	};
-
 	render() {
 		return (
 			<div className='content'>
@@ -140,7 +132,6 @@ class ContentComponent extends React.Component {
 					deleteNote={this.deleteNote}
 					notesIsLoading={this.state.notesIsLoading}
 					sidebarIsClosed={this.props.sidebarIsClosed}
-					focusOnEditorOrTitleInput={this.state.focusOnEditorOrTitleInput}
 				/>
 				<Editor
 					notes={this.state.notes}
@@ -149,7 +140,6 @@ class ContentComponent extends React.Component {
 					updateNoteTitle={this.updateNoteTitle}
 					updateNoteText={this.updateNoteText}
 					selectCurrentNote={this.selectCurrentNote}
-					setFocusOnEditorOrTitleInput={this.setFocusOnEditorOrTitleInput}
 				/>
 			</div>
 		);

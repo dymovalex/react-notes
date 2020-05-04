@@ -23,9 +23,9 @@ class SideBarComponent extends React.Component {
 	componentWillUnmount() {
 		document.removeEventListener('keydown', this.handleKeyDown)
 	}
-/*
+
 	handleKeyDown = (e) => {
-		if (this.props.focusOnEditorOrTitleInput) {
+		if (e.target.className === 'ql-editor' || e.target.className === 'editor__title__input') {
 			return;
 		} else {
 			switch (e.key) {
@@ -76,7 +76,7 @@ class SideBarComponent extends React.Component {
 					return null;
 			}
 		}
-	}*/
+	}
 
 	handleClickNewNoteAndCancelButtons = () => {
 		this.setState(state => ({
