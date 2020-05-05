@@ -4,74 +4,30 @@ import { connect } from 'react-redux';
 import Editor from '../../components/editor/editor.component';
 import SideBar from '../../components/sidebar/sidebar.component';
 
-import { debounce } from '../../components/note/note.utils';
-import { getNotesRef } from '../../firebase/firebase.utils';
+import { fetchNotesStartAsync } from '../../redux/notebook/notebook.actions';
 
 import './content.styles.scss';
 
 class Content extends React.Component {
-	constructor() {
-		super();
 
-		this.state = {
-			notesRef: null,
-			notesIsLoading: true,
-		};
-	}
-
-	async componentDidMount() {
-		if (this.props.currentUser) {
-			this.getNotesFromFirebase();
-		} else {
-			this.setState({
-				notesIsLoading: false,
-			})
+	componentDidMount() {
+		const { currentUser, getNotesFromFirebase } = this.props;
+		if (currentUser) {
+			getNotesFromFirebase(currentUser);
 		}
 	}
 
 	async componentDidUpdate(prevProps) {
-		if (prevProps.currentUser === null && this.props.currentUser) {
-			this.getNotesFromFirebase();
-			this.setState({
-				notesIsLoading: true
-			})
-		} else if (prevProps.currentUser && this.props.currentUser === null) {
-			this.clearState();
+		const { currentUser, getNotesFromFirebase } = this.props;
+		if (prevProps.currentUser === null && currentUser) {
+			getNotesFromFirebase(currentUser);
 		}
 	}
-
-	clearState = () => {
-		this.setState({
-			notes: [],
-			selectedNoteIndex: null,
-			notesRef: null,
-			notesIsLoading: false,
-		});
-	};
-
-	getNotesFromFirebase = async () => {
-		const notesRef = await getNotesRef(this.props.currentUser.id);
-		const notesSnapshot = await notesRef.get();
-		this.setState({
-			notes: notesSnapshot.data().notesOfUser,
-			notesRef,
-			notesIsLoading: false,
-		});
-	}
-
-	updateFirebase = debounce(async () => {
-		if (this.props.currentUser) {
-			await this.state.notesRef.update({ notesOfUser: this.state.notes });
-		}
-	}, 2000);
 
 	render() {
 		return (
 			<div className='content'>
-				<SideBar
-					notesIsLoading={this.state.notesIsLoading}
-					sidebarIsClosed={this.props.sidebarIsClosed}
-				/>
+				<SideBar />
 				<Editor />
 			</div>
 		);
@@ -83,4 +39,8 @@ const mapStateToProps = state => ({
 	notes: state.notebook.notes,
 });
 
-export default connect(mapStateToProps)(Content);
+const mapDispatchToProps = dispatch => ({
+	getNotesFromFirebase: currentUser => dispatch(fetchNotesStartAsync(currentUser)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

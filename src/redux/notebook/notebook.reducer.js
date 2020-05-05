@@ -10,8 +10,11 @@ import {
 const INITIAL_STATE = {
   notes: [],
   addingNote: false,
+  editingNoteTitle: false,
   newNoteTitle: '',
   selectedNoteIndex: null,
+  notesIsLoading: false,
+  errorMessage: '',
 };
 
 const notebookReducer = (state = INITIAL_STATE, action) => {
@@ -28,6 +31,12 @@ const notebookReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         addingNote: !state.addingNote
+      };
+
+    case NotebookActionTypes.SWITCH_EDITING_NOTE_TITLE:
+      return {
+        ...state,
+        editingNoteTitle: !state.editingNoteTitle
       };
 
     case NotebookActionTypes.EDIT_NOTE_TITLE:
@@ -58,6 +67,38 @@ const notebookReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         notes: updateNoteText(state.notes, state.selectedNoteIndex, action.payload)
+      };
+
+    case NotebookActionTypes.FETCH_NOTES_START:
+      return {
+        ...state,
+        notesIsLoading: true
+      };
+
+    case NotebookActionTypes.FETCH_NOTES_SUCCESS:
+      return {
+        ...state,
+        notes: action.payload,
+        notesIsLoading: false
+      };
+
+    case NotebookActionTypes.FETCH_NOTES_FAILURE:
+      return {
+        ...state,
+        notesIsLoading: false,
+        errorMessage: action.payload
+      };
+
+    case NotebookActionTypes.UPDATE_FIREBASE_START:
+    case NotebookActionTypes.UPDATE_FIREBASE_SUCCESS:
+      return {
+        ...state
+      };
+
+    case NotebookActionTypes.UPDATE_FIREBASE_FAILURE:
+      return {
+        ...state,
+        errorMessage: action.payload
       };
 
     default:

@@ -28,7 +28,15 @@ class SideBarComponent extends React.Component {
 		if (e.target.className === 'ql-editor' || e.target.className === 'editor__title__input') {
 			return;
 		} else {
-			const { notes, createNewNote, selectedNoteIndex, deleteNote, addingNote, switchAddingNote, selectCurrentNote, newNoteTitle } = this.props;
+			const { notes,
+				createNewNote,
+				selectedNoteIndex,
+				deleteNote,
+				addingNote,
+				switchAddingNote,
+				selectCurrentNote,
+				newNoteTitle } = this.props;
+
 			switch (e.key) {
 				case 'Enter':
 					if (addingNote) {
@@ -80,7 +88,17 @@ class SideBarComponent extends React.Component {
 	}
 
 	render() {
-		const { selectedNoteIndex, notes, addingNote, newNoteTitle, createNewNote, switchAddingNote, editNoteTitle, sidebarIsClosed } = this.props;
+		const {
+			notes,
+			selectedNoteIndex,
+			createNewNote,
+			addingNote,
+			switchAddingNote,
+			newNoteTitle,
+			notesIsLoading,
+			editNoteTitle,
+			sidebarIsClosed } = this.props;
+
 		return (
 			<div className={`sidebar ${sidebarIsClosed ? '' : 'open'}`}>
 				{
@@ -113,7 +131,7 @@ class SideBarComponent extends React.Component {
 						</div>)
 				}
 
-				{this.props.notesIsLoading ?
+				{notesIsLoading ?
 					<Spinner /> :
 					(<div className='notes-container'>
 						{
@@ -139,6 +157,7 @@ const mapStateToProps = ({ notebook, sidebar }) => ({
 	newNoteTitle: notebook.newNoteTitle,
 	selectedNoteIndex: notebook.selectedNoteIndex,
 	sidebarIsClosed: sidebar.isClosed,
+	notesIsLoading: notebook.notesIsLoading,
 });
 
 const mapDispatchToProps = dispatch => ({

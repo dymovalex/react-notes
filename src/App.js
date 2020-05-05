@@ -12,7 +12,6 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import './App.scss';
 
 import { setCurrentUser } from './redux/user/user.actions';
-import { toggleSidebar } from './redux/sidebar/sidebar.actions';
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -40,23 +39,13 @@ class App extends React.Component {
   }
 
   render() {
-    const { currentUser, sidebarIsClosed, toggleSidebar } = this.props;
+    const { currentUser } = this.props;
 
     return (
       <div className='app-container'>
-        <Header toggleSidebar={toggleSidebar} />
+        <Header />
         <Switch>
-          <Route
-            exact
-            path='/'
-            render={() =>
-              <Content
-                currentUser={currentUser}
-                sidebarIsClosed={sidebarIsClosed}
-                toggleSidebar={toggleSidebar}
-              />
-            }
-          />
+          <Route exact path='/' component={Content} />
           <Route
             path='/signin'
             render={() =>
@@ -74,14 +63,12 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user, sidebar }) => ({
+const mapStateToProps = ({ user }) => ({
   currentUser: user.currentUser,
-  sidebarIsClosed: sidebar.isClosed,
 });
 
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user)),
-  toggleSidebar: () => dispatch(toggleSidebar()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

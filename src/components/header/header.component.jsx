@@ -6,6 +6,8 @@ import { auth } from '../../firebase/firebase.utils';
 
 import './header.styles.scss';
 
+import { toggleSidebar } from '../../redux/sidebar/sidebar.actions';
+
 const Header = ({ currentUser, toggleSidebar, history }) => {
 	return (
 		<div className='header' onClick={toggleSidebar}>
@@ -36,4 +38,8 @@ const mapStateToProps = ({ user }) => ({
 	currentUser: user.currentUser
 });
 
-export default connect(mapStateToProps)(withRouter(Header));
+const mapDispatchToProps = dispatch => ({
+	toggleSidebar: () => dispatch(toggleSidebar()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

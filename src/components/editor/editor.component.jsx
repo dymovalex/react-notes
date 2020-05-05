@@ -6,39 +6,39 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './editor.styles.scss';
 
-import { createNewNote, selectCurrentNote, updateNoteTitle, updateNoteText } from '../../redux/notebook/notebook.actions';
+import {
+	createNewNote,
+	selectCurrentNote,
+	updateNoteTitle,
+	updateNoteText,
+	switchEditingNoteTitle
+} from '../../redux/notebook/notebook.actions';
 
 class Editor extends React.Component {
-	constructor() {
-		super();
-
-		this.state = {
-			editingNoteTitle: false,
-			editedTitle: ''
-		};
-	}
-
-	handleClickEditNoteTitleButton = () => {
-		this.setState(state => ({
-			editingNoteTitle: !state.editingNoteTitle
-		}))
-	};
 
 	handleFocusOnEditor = () => {
-		if (this.state.editingNoteTitle) {
-			this.handleClickEditNoteTitleButton();
+		const { editingNoteTitle, switchEditingNoteTitle } = this.props;
+		if (editingNoteTitle) {
+			switchEditingNoteTitle();
 		}
 	};
 
 	render() {
-		const { notes, selectedNoteIndex, updateNoteTitle, updateNoteText, createNewNote, selectCurrentNote } = this.props;
+		const { notes,
+			createNewNote,
+			selectCurrentNote,
+			selectedNoteIndex,
+			updateNoteTitle,
+			updateNoteText,
+			editingNoteTitle,
+			switchEditingNoteTitle } = this.props;
 
 		return (
 			<div className='editor'>
 				{
-					this.state.editingNoteTitle ?
+					editingNoteTitle ?
 						(<div className='editor__title'>
-							<i className="far fa-check-square" onClick={this.handleClickEditNoteTitleButton}></i>
+							<i className="far fa-check-square" onClick={switchEditingNoteTitle}></i>
 							<input
 								className='editor__title__input'
 								type='text'
@@ -61,7 +61,7 @@ class Editor extends React.Component {
 							</input>
 						</div>)
 						:
-						(<div className='editor__title' onClick={this.handleClickEditNoteTitleButton}>
+						(<div className='editor__title' onClick={switchEditingNoteTitle}>
 							<i className="far fa-edit"></i>
 							<span>{notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}</span>
 						</div>)
@@ -80,7 +80,7 @@ class Editor extends React.Component {
 								createAt: Date.now()
 							}
 
-							this.props.createNewNote(newNote);
+							createNewNote(newNote);
 							selectCurrentNote(0);
 						}
 					}}
@@ -109,7 +109,8 @@ Editor.modules = {
 
 const mapStateToProps = ({ notebook }) => ({
 	notes: notebook.notes,
-	selectedNoteIndex: notebook.selectedNoteIndex
+	selectedNoteIndex: notebook.selectedNoteIndex,
+	editingNoteTitle: notebook.editingNoteTitle,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -117,6 +118,7 @@ const mapDispatchToProps = dispatch => ({
 	selectCurrentNote: noteIndex => dispatch(selectCurrentNote(noteIndex)),
 	updateNoteTitle: title => dispatch(updateNoteTitle(title)),
 	updateNoteText: title => dispatch(updateNoteText(title)),
+	switchEditingNoteTitle: () => dispatch(switchEditingNoteTitle()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor);
