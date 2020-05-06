@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import Editor from '../../components/editor/editor.component';
 import SideBar from '../../components/sidebar/sidebar.component';
 
 import { fetchNotesStartAsync } from '../../redux/notebook/notebook.actions';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 import './content.styles.scss';
 
@@ -34,9 +36,8 @@ class Content extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	currentUser: state.user.currentUser,
-	notes: state.notebook.notes,
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({

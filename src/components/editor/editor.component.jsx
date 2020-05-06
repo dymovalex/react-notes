@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import ReactQuill from 'react-quill';
 
@@ -13,6 +14,12 @@ import {
 	updateNoteText,
 	switchEditingNoteTitle
 } from '../../redux/notebook/notebook.actions';
+
+import {
+	selectNotebookNotes,
+	selectNotebookSelectedNoteIndex,
+	selectNotebookEditingNoteTitle
+} from '../../redux/notebook/notebook.selectors';
 
 class Editor extends React.Component {
 
@@ -107,10 +114,10 @@ Editor.modules = {
 	}
 };
 
-const mapStateToProps = ({ notebook }) => ({
-	notes: notebook.notes,
-	selectedNoteIndex: notebook.selectedNoteIndex,
-	editingNoteTitle: notebook.editingNoteTitle,
+const mapStateToProps = createStructuredSelector({
+	notes: selectNotebookNotes,
+	selectedNoteIndex: selectNotebookSelectedNoteIndex,
+	editingNoteTitle: selectNotebookEditingNoteTitle,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import CustomButton from '../custom-button/custom-button.component';
 import Note from '../note/note.component';
@@ -14,6 +15,15 @@ import {
 	selectCurrentNote,
 	deleteNote
 } from '../../redux/notebook/notebook.actions';
+
+import {
+	selectNotebookNotes,
+	selectNotebookAddingNote,
+	selectNotebookNewNoteTitle,
+	selectNotebookSelectedNoteIndex,
+	selectNotebookNotesIsLoading
+} from '../../redux/notebook/notebook.selectors';
+import { selectSidebarIsClosed } from '../../redux/sidebar/sidebar.selectors';
 
 class SideBarComponent extends React.Component {
 	componentDidMount() {
@@ -151,13 +161,13 @@ class SideBarComponent extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ notebook, sidebar }) => ({
-	notes: notebook.notes,
-	addingNote: notebook.addingNote,
-	newNoteTitle: notebook.newNoteTitle,
-	selectedNoteIndex: notebook.selectedNoteIndex,
-	sidebarIsClosed: sidebar.isClosed,
-	notesIsLoading: notebook.notesIsLoading,
+const mapStateToProps = createStructuredSelector({
+	notes: selectNotebookNotes,
+	addingNote: selectNotebookAddingNote,
+	newNoteTitle: selectNotebookNewNoteTitle,
+	selectedNoteIndex: selectNotebookSelectedNoteIndex,
+	sidebarIsClosed: selectSidebarIsClosed,
+	notesIsLoading: selectNotebookNotesIsLoading,
 });
 
 const mapDispatchToProps = dispatch => ({

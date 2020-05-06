@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import { auth } from '../../firebase/firebase.utils';
 
 import './header.styles.scss';
 
 import { toggleSidebar } from '../../redux/sidebar/sidebar.actions';
+import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 const Header = ({ currentUser, toggleSidebar, history }) => {
 	return (
@@ -34,8 +36,8 @@ const Header = ({ currentUser, toggleSidebar, history }) => {
 	);
 };
 
-const mapStateToProps = ({ user }) => ({
-	currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+	currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
