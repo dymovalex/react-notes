@@ -1,10 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
 
 import {
-	auth,
 	signInWithGoogle,
 	signInWithTwitter,
 	signInWithGithub
@@ -12,67 +13,39 @@ import {
 
 import './sign-in.styles.scss';
 
+import { handleInputChange, signInAsync } from '../../redux/sign-in/sign-in.actions';
+import { selectSignInEmail, selectSignInPassword } from '../../redux/sign-in/sign-in.selectors';
+
 class SignIn extends React.Component {
-	constructor() {
-		super();
-
-		this.state = {
-			email: '',
-			password: '',
-		};
-	}
-
-	handleSubmit = async () => {
-		const { email, password } = this.state;
-
-		try {
-			auth.signInWithEmailAndPassword(email, password);
-
-			this.setState({
-				email: '',
-				password: '',
-			});
-
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	handleChange = e => {
-		const { value, name } = e.target;
-
-		this.setState({
-			[name]: value
-		});
-	};
-
 	render() {
+		const { email, password, handleInputChange, signInAsync } = this.props;
+
 		return (
 			<div className='sign-in'>
 				<h2 className='sign-in__title'>Do you have an account already?</h2>
 				<span className='sign-in__description'>Sign in with your email and password</span>
 
-				<form className='sign-in__form' onSubmit={this.handleSubmit}>
+				<form className='sign-in__form' onSubmit={signInAsync}>
 					<FormInput
 						type='email'
 						name='email'
 						label='Email'
-						value={this.state.email}
-						handleChange={this.handleChange}
+						value={email}
+						handleChange={(e) => handleInputChange({ [e.target.name]: e.target.value })}
 						required
 					/>
 					<FormInput
 						type='password'
 						name='password'
 						label='Password'
-						value={this.state.password}
-						handleChange={this.handleChange}
+						value={password}
+						handleChange={(e) => handleInputChange({ [e.target.name]: e.target.value })}
 						required
 					/>
 				</form>
 
 				<div className='sign-in__buttons-container'>
-					<CustomButton onClick={this.handleSubmit}>Sign in</CustomButton>
+					<CustomButton onClick={signInAsync}>Sign in</CustomButton>
 				</div>
 				<span className='sign-in__description'>Or use one of your accounts</span>
 				<div className='sign-in__buttons-container'>
@@ -98,4 +71,14 @@ class SignIn extends React.Component {
 	}
 }
 
-export default SignIn;
+const mapStateToProps = createStructuredSelector({
+	email: selectSignInEmail,
+	password: selectSignInPassword,
+});
+
+const mapDispatchToProps = dispatch => ({
+	handleInputChange: (value) => dispatch(handleInputChange(value)),
+	signInAsync: () => dispatch(signInAsync()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

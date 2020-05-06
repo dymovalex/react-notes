@@ -85,7 +85,7 @@ export const fetchNotesSuccess = notes => ({
 
 export const fetchNotesFailure = error => ({
   type: NotebookActionTypes.FETCH_NOTES_FAILURE,
-  payload: error.message
+  payload: error
 });
 
 export const fetchNotesStartAsync = currentUser => {
