@@ -1,6 +1,6 @@
 import NotebookActionTypes from './notebook.types';
+import { updateFirebase } from './notebook.utils';
 import { getNotesRef } from '../../firebase/firebase.utils';
-import { debounce } from '../../components/note/note.utils';
 
 export const createNewNote = note => {
   return dispatch => {
@@ -8,7 +8,8 @@ export const createNewNote = note => {
       type: NotebookActionTypes.CREATE_NEW_NOTE,
       payload: note
     });
-    dispatch(updateFirebaseStartAsync());
+
+    updateFirebase();
   }
 };
 
@@ -36,7 +37,8 @@ export const deleteNote = noteIndex => {
       type: NotebookActionTypes.DELETE_NOTE,
       payload: noteIndex
     });
-    dispatch(updateFirebaseStartAsync());
+
+    updateFirebase();
   }
 };
 
@@ -46,7 +48,8 @@ export const updateNoteTitle = title => {
       type: NotebookActionTypes.UPDATE_NOTE_TITLE,
       payload: title
     });
-    dispatch(updateFirebaseStartAsync());
+
+    updateFirebase();
   }
 };
 
@@ -56,7 +59,8 @@ export const updateNoteText = text => {
       type: NotebookActionTypes.UPDATE_NOTE_TEXT,
       payload: text
     });
-    dispatch(updateFirebaseStartAsync());
+
+    updateFirebase();
   }
 };
 
@@ -85,41 +89,5 @@ export const fetchNotesStartAsync = currentUser => {
     } catch (error) {
       dispatch(fetchNotesFailure(error));
     }
-  }
-};
-
-export const updateFirebaseStart = () => ({
-  type: NotebookActionTypes.UPDATE_FIREBASE_START
-});
-
-export const updateFirebaseSuccess = () => ({
-  type: NotebookActionTypes.UPDATE_FIREBASE_SUCCESS
-});
-
-export const updateFirebaseFailure = error => ({
-  type: NotebookActionTypes.UPDATE_FIREBASE_FAILURE,
-  payload: error.message
-});
-
-export const updateFirebaseStartAsync = () => {
-  return async (dispatch, getState) => {
-    dispatch(updateFirebaseStart());
-
-    const currentUser = getState().user.currentUser;
-    const notes = getState().notebook.notes;
-    const update = debounce(async () => {
-
-      try {
-        if (currentUser) {
-          const notesRef = await getNotesRef(currentUser.id);
-          await notesRef.update({ notesOfUser: notes });
-          dispatch(updateFirebaseSuccess());
-        }
-      } catch (error) {
-        dispatch(updateFirebaseFailure(error));
-      }
-    }, 2000);
-
-    await update();
   }
 };

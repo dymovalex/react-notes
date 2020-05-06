@@ -89,18 +89,6 @@ const notebookReducer = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload
       };
 
-    case NotebookActionTypes.UPDATE_FIREBASE_START:
-    case NotebookActionTypes.UPDATE_FIREBASE_SUCCESS:
-      return {
-        ...state
-      };
-
-    case NotebookActionTypes.UPDATE_FIREBASE_FAILURE:
-      return {
-        ...state,
-        errorMessage: action.payload
-      };
-
     default:
       return state;
   }
