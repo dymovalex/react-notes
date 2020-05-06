@@ -5,10 +5,10 @@ import { createStructuredSelector } from 'reselect';
 
 import { auth } from '../../firebase/firebase.utils';
 
-import './header.styles.scss';
-
 import { toggleSidebar } from '../../redux/sidebar/sidebar.actions';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
+
+import './header.styles.scss';
 
 const Header = ({ currentUser, toggleSidebar, history }) => {
 	return (

@@ -1,65 +1,54 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import SignIn from '../sign-in/sign-in.component';
 import SignUp from '../sign-up/sign-up.component';
 
+import { handleResize } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.actions';
+import { selectMobileView, selectSignInIsShown } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.selectors';
+
 import './sign-in-and-sign-up.styles.scss';
 
 class SignInAndSignUp extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      mobileView: false,
-      signInIsShown: true,
-    };
-  }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize);
-    this.handleResize();
+    window.addEventListener('resize', this.props.handleResize);
+    this.props.handleResize();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize);
-  }
-
-  handleResize = () => {
-    if (!this.state.mobileView && window.innerWidth < 910) {
-      this.setState({
-        mobileView: true
-      });
-    }
-    if (this.state.mobileView && window.innerWidth >= 910) {
-      this.setState({
-        mobileView: false
-      });
-    }
-  }
-
-  singInSignUpSwitcher = () => {
-    this.setState(state => ({
-      signInIsShown: !state.signInIsShown
-    }));
+    window.removeEventListener('resize', this.props.handleResize);
   }
 
   render() {
+    const { mobileView, signInIsShown } = this.props;
+
     return (
       <div className='sign-in-and-sign-up'>
         {
-          !this.state.mobileView ?
+          !mobileView ?
             <React.Fragment>
-              <SignIn mobileView={this.state.mobileView} />
-              <SignUp mobileView={this.state.mobileView} />
+              <SignIn />
+              <SignUp />
             </React.Fragment> :
 
-            this.state.signInIsShown ?
-              <SignIn mobileView={this.state.mobileView} singInSignUpSwitcher={this.singInSignUpSwitcher} /> :
-              <SignUp mobileView={this.state.mobileView} singInSignUpSwitcher={this.singInSignUpSwitcher} />
+            signInIsShown ?
+              <SignIn /> :
+              <SignUp />
         }
       </div>
     );
   }
 }
 
-export default SignInAndSignUp;
+const mapStateToProps = createStructuredSelector({
+  mobileView: selectMobileView,
+  signInIsShown: selectSignInIsShown,
+});
+
+const mapDispatchToProps = dispatch => ({
+  handleResize: () => dispatch(handleResize()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInAndSignUp);

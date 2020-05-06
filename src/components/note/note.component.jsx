@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import { removeTags } from './note.utils';
 
-import './note.styles.scss';
-
 import { selectCurrentNote, deleteNote } from '../../redux/notebook/notebook.actions';
+
+import './note.styles.scss';
 
 const Note = ({ note, selected, index, selectCurrentNote, deleteNote }) => {
 	const createAt = new Date(note.createAt);

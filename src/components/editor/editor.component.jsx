@@ -4,9 +4,6 @@ import { createStructuredSelector } from 'reselect';
 
 import ReactQuill from 'react-quill';
 
-import 'react-quill/dist/quill.snow.css';
-import './editor.styles.scss';
-
 import {
 	createNewNote,
 	selectCurrentNote,
@@ -14,12 +11,14 @@ import {
 	updateNoteText,
 	switchEditingNoteTitle
 } from '../../redux/notebook/notebook.actions';
-
 import {
 	selectNotebookNotes,
 	selectNotebookSelectedNoteIndex,
 	selectNotebookEditingNoteTitle
 } from '../../redux/notebook/notebook.selectors';
+
+import 'react-quill/dist/quill.snow.css';
+import './editor.styles.scss';
 
 class Editor extends React.Component {
 

@@ -1,13 +1,13 @@
 .content {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    height: calc(100 * var(--vh) - var(--header-height) - var(--footer-height) - 20px);
-    width: auto;
-    max-width: 99%;
-    margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	height: calc(100 * var(--vh) - var(--header-height) - var(--footer-height) - 20px);
+	width: auto;
+	max-width: 99%;
+	margin: 0 auto;
 
-    @media screen and (max-width: 680px) {
-        display: block;
-        position: relative;
-    }
+	@media screen and (max-width: 680px) {
+		display: block;
+		position: relative;
+	}
 }

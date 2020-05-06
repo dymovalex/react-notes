@@ -6,8 +6,6 @@ import CustomButton from '../custom-button/custom-button.component';
 import Note from '../note/note.component';
 import Spinner from '../spinner/spinner.component';
 
-import './sidebar.styles.scss';
-
 import {
 	createNewNote,
 	switchAddingNote,
@@ -15,7 +13,6 @@ import {
 	selectCurrentNote,
 	deleteNote
 } from '../../redux/notebook/notebook.actions';
-
 import {
 	selectNotebookNotes,
 	selectNotebookAddingNote,
@@ -24,6 +21,8 @@ import {
 	selectNotebookNotesIsLoading
 } from '../../redux/notebook/notebook.selectors';
 import { selectSidebarIsClosed } from '../../redux/sidebar/sidebar.selectors';
+
+import './sidebar.styles.scss';
 
 class SideBarComponent extends React.Component {
 	componentDidMount() {
