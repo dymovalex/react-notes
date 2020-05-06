@@ -1,4 +1,5 @@
 import NotebookActionTypes from './notebook.types';
+import { toggleSidebar } from '../sidebar/sidebar.actions';
 import { updateFirebase } from './notebook.utils';
 import { getNotesRef } from '../../firebase/firebase.utils';
 
@@ -26,10 +27,19 @@ export const editNoteTitle = title => ({
   payload: title
 });
 
-export const selectCurrentNote = noteIndex => ({
-  type: NotebookActionTypes.SELECT_CURRENT_NOTE,
-  payload: noteIndex
-});
+export const selectCurrentNote = noteIndex => {
+  return (dispatch, getState) => {
+    const selectedNoteIndex = getState().notebook.selectedNoteIndex;
+    if (noteIndex === selectedNoteIndex) {
+      dispatch(toggleSidebar());
+    }
+
+    dispatch({
+      type: NotebookActionTypes.SELECT_CURRENT_NOTE,
+      payload: noteIndex
+    });
+  };
+};
 
 export const deleteNote = noteIndex => {
   return dispatch => {
