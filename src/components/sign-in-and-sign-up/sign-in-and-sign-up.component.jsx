@@ -1,54 +1,39 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { useEffect, useContext } from 'react';
 
 import SignIn from '../sign-in/sign-in.component';
 import SignUp from '../sign-up/sign-up.component';
 
-import { handleResize } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.actions';
-import { selectMobileView, selectSignInIsShown } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.selectors';
+import { SignInAndSignUpContext } from '../../providers/sign-in-and-sign-up/sign-in-and-sign-up.provider';
 
 import './sign-in-and-sign-up.styles.scss';
 
-class SignInAndSignUp extends React.Component {
+const SignInAndSignUp = () => {
+  const { mobileView, signInIsShown, handleResize } = useContext(SignInAndSignUpContext)
 
-  componentDidMount() {
-    window.addEventListener('resize', this.props.handleResize);
-    this.props.handleResize();
-  }
+  useEffect(() => {
+    console.log('Event listener was add')
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return function () {
+      window.removeEventListener('resize', handleResize);
+    }
+  });
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.props.handleResize);
-  }
+  return (
+    <div className='sign-in-and-sign-up'>
+      {
+        !mobileView ?
+          <React.Fragment>
+            <SignIn />
+            <SignUp />
+          </React.Fragment> :
 
-  render() {
-    const { mobileView, signInIsShown } = this.props;
-
-    return (
-      <div className='sign-in-and-sign-up'>
-        {
-          !mobileView ?
-            <React.Fragment>
-              <SignIn />
-              <SignUp />
-            </React.Fragment> :
-
-            signInIsShown ?
-              <SignIn /> :
-              <SignUp />
-        }
-      </div>
-    );
-  }
+          signInIsShown ?
+            <SignIn /> :
+            <SignUp />
+      }
+    </div>
+  );
 }
 
-const mapStateToProps = createStructuredSelector({
-  mobileView: selectMobileView,
-  signInIsShown: selectSignInIsShown,
-});
-
-const mapDispatchToProps = dispatch => ({
-  handleResize: () => dispatch(handleResize()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignInAndSignUp);
+export default SignInAndSignUp;

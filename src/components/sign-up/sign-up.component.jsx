@@ -1,23 +1,45 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { useState, useContext } from 'react';
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
 
-import { handleInputChange, signUpAsync } from '../../redux/sign-up/sign-up.actions';
-import { switchSignInAndSignUp } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.actions';
-import {
-  selectSignUpDisplayName,
-  selectSignUpEmail,
-  selectSignUpPassword,
-  selectSignUpConfirmPassword
-} from '../../redux/sign-up/sign-up.selectors';
-import { selectMobileView } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.selectors';
+import { SignInAndSignUpContext } from '../../providers/sign-in-and-sign-up/sign-in-and-sign-up.provider';
+
+import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import './sign-up.styles.scss';
 
-const SignUp = ({ displayName, email, password, confirmPassword, handleInputChange, signUpAsync, mobileView, switchSignInAndSignUp }) => {
+const SignUp = () => {
+  const [displayName, setDisplayName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const { mobileView, switchSignInAndSignUp } = useContext(SignInAndSignUpContext);
+
+  const signUp = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords don't match");
+      return;
+    }
+
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+
+      await createUserProfileDocument(user, { displayName });
+      setDisplayName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='sign-up'>
       <h2 className='sign-up__title'>Don't you have an account yet?</h2>
@@ -29,7 +51,7 @@ const SignUp = ({ displayName, email, password, confirmPassword, handleInputChan
           name='displayName'
           label='Display Name'
           value={displayName}
-          handleChange={(e) => handleInputChange({ [e.target.name]: e.target.value })}
+          handleChange={(e) => setDisplayName(e.target.value)}
           required
         />
         <FormInput
@@ -37,7 +59,7 @@ const SignUp = ({ displayName, email, password, confirmPassword, handleInputChan
           name='email'
           label='Email'
           value={email}
-          handleChange={(e) => handleInputChange({ [e.target.name]: e.target.value })}
+          handleChange={(e) => setEmail(e.target.value)}
           required
         />
         <FormInput
@@ -45,7 +67,7 @@ const SignUp = ({ displayName, email, password, confirmPassword, handleInputChan
           name='password'
           label='Password'
           value={password}
-          handleChange={(e) => handleInputChange({ [e.target.name]: e.target.value })}
+          handleChange={(e) => setPassword(e.target.value)}
           required
         />
         <FormInput
@@ -53,13 +75,13 @@ const SignUp = ({ displayName, email, password, confirmPassword, handleInputChan
           name='confirmPassword'
           label='Confirm password'
           value={confirmPassword}
-          handleChange={(e) => handleInputChange({ [e.target.name]: e.target.value })}
+          handleChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
       </form>
 
       <div className='sign-up__buttons-container'>
-        <CustomButton onClick={signUpAsync}>Sign up</CustomButton>
+        <CustomButton onClick={signUp}>Sign up</CustomButton>
       </div>
 
       {
@@ -73,18 +95,4 @@ const SignUp = ({ displayName, email, password, confirmPassword, handleInputChan
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-  displayName: selectSignUpDisplayName,
-  email: selectSignUpEmail,
-  password: selectSignUpPassword,
-  confirmPassword: selectSignUpConfirmPassword,
-  mobileView: selectMobileView,
-});
-
-const mapDispatchToProps = dispatch => ({
-  handleInputChange: (value) => dispatch(handleInputChange(value)),
-  signUpAsync: () => dispatch(signUpAsync()),
-  switchSignInAndSignUp: () => dispatch(switchSignInAndSignUp()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default SignUp;

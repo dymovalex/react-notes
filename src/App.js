@@ -8,6 +8,8 @@ import Content from './components/content/content.component';
 import SignInAndSignUp from './components/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Footer from './components/footer/footer.component';
 
+import SignInAndSignUpProvider from './providers/sign-in-and-sign-up/sign-in-and-sign-up.provider';
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 import { setCurrentUser } from './redux/user/user.actions';
@@ -54,7 +56,9 @@ class App extends React.Component {
               currentUser ? (
                 <Redirect to='/' />
               ) : (
-                  <SignInAndSignUp />
+                  <SignInAndSignUpProvider>
+                    <SignInAndSignUp />
+                  </SignInAndSignUpProvider>
                 )
             }
           />
