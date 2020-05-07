@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
+
+import { NotebookContext } from '../../providers/notebook/notebook.provider';
 
 import { removeTags } from './note.utils';
 
-import { selectCurrentNote, deleteNote } from '../../redux/notebook/notebook.actions';
-
 import './note.styles.scss';
 
-const Note = ({ note, selected, index, selectCurrentNote, deleteNote }) => {
+const Note = ({ note, selected, index }) => {
+	const { selectCurrentNote, deleteNote } = useContext(NotebookContext);
 	const createAt = new Date(note.createAt);
 
 	return (
@@ -48,9 +48,4 @@ const Note = ({ note, selected, index, selectCurrentNote, deleteNote }) => {
 	);
 };
 
-const mapDispatchToProps = dispatch => ({
-	selectCurrentNote: noteIndex => dispatch(selectCurrentNote(noteIndex)),
-	deleteNote: noteIndex => dispatch(deleteNote(noteIndex)),
-});
-
-export default connect(null, mapDispatchToProps)(Note);
+export default Note;

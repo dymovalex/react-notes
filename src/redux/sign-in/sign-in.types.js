@@ -1,7 +1,0 @@
-const SignInActionTypes = {
-  HANDLE_INPUT_CHANGE: 'HANDLE_INPUT_CHANGE',
-  SIGN_IN_SUCCESS: 'SIGN_IN_SUCCESS',
-  SIGN_IN_FAILURE: 'SIGN_IN_FAILURE',
-};
-
-export default SignInActionTypes;

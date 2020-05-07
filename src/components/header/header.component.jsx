@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+
+import { UserContext } from '../../providers/user/user.provider';
+import { SidebarContext } from '../../providers/sidebar/sidebar.provider';
 
 import { auth } from '../../firebase/firebase.utils';
 
-import { toggleSidebar } from '../../redux/sidebar/sidebar.actions';
-import { selectCurrentUser } from '../../redux/user/user.selectors';
-
 import './header.styles.scss';
 
-const Header = ({ currentUser, toggleSidebar, history }) => {
+const Header = ({ history }) => {
+	const { currentUser } = useContext(UserContext);
+	const { toggleSidebar } = useContext(SidebarContext);
+
 	return (
 		<div className='header' onClick={toggleSidebar}>
 			<div className='header__bars'>
@@ -36,12 +37,4 @@ const Header = ({ currentUser, toggleSidebar, history }) => {
 	);
 };
 
-const mapStateToProps = createStructuredSelector({
-	currentUser: selectCurrentUser
-});
-
-const mapDispatchToProps = dispatch => ({
-	toggleSidebar: () => dispatch(toggleSidebar()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));
+export default withRouter(Header);

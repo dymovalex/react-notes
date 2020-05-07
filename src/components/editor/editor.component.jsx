@@ -1,100 +1,85 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { useContext } from 'react';
 
 import ReactQuill from 'react-quill';
 
-import {
-	createNewNote,
-	selectCurrentNote,
-	updateNoteTitle,
-	updateNoteText,
-	switchEditingNoteTitle
-} from '../../redux/notebook/notebook.actions';
-import {
-	selectNotebookNotes,
-	selectNotebookSelectedNoteIndex,
-	selectNotebookEditingNoteTitle
-} from '../../redux/notebook/notebook.selectors';
+import { NotebookContext } from '../../providers/notebook/notebook.provider';
 
 import 'react-quill/dist/quill.snow.css';
 import './editor.styles.scss';
 
-class Editor extends React.Component {
+const Editor = () => {
+	const {
+		notes,
+		selectedNoteIndex,
+		editingNoteTitle,
+		createNewNote,
+		selectCurrentNote,
+		updateNoteTitle,
+		updateNoteText,
+		switchEditingNoteTitle
+	} = useContext(NotebookContext);
 
-	handleFocusOnEditor = () => {
-		const { editingNoteTitle, switchEditingNoteTitle } = this.props;
+	const handleFocusOnEditor = () => {
 		if (editingNoteTitle) {
 			switchEditingNoteTitle();
 		}
 	};
 
-	render() {
-		const { notes,
-			createNewNote,
-			selectCurrentNote,
-			selectedNoteIndex,
-			updateNoteTitle,
-			updateNoteText,
-			editingNoteTitle,
-			switchEditingNoteTitle } = this.props;
+	return (
+		<div className='editor'>
+			{
+				editingNoteTitle ?
+					(<div className='editor__title'>
+						<i className="far fa-check-square" onClick={switchEditingNoteTitle}></i>
+						<input
+							className='editor__title__input'
+							type='text'
+							value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}
+							onChange={(e) => {
+								if (selectedNoteIndex || selectedNoteIndex === 0) {
+									updateNoteTitle(e.target.value);
+								} else {
+									const newNote = {
+										title: e.target.value,
+										text: '',
+										createAt: Date.now()
+									};
 
-		return (
-			<div className='editor'>
-				{
-					editingNoteTitle ?
-						(<div className='editor__title'>
-							<i className="far fa-check-square" onClick={switchEditingNoteTitle}></i>
-							<input
-								className='editor__title__input'
-								type='text'
-								value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}
-								onChange={(e) => {
-									if (selectedNoteIndex || selectedNoteIndex === 0) {
-										updateNoteTitle(e.target.value);
-									} else {
-										const newNote = {
-											title: e.target.value,
-											text: '',
-											createAt: Date.now()
-										};
-
-										createNewNote(newNote);
-										selectCurrentNote(0);
-									}
-								}}
-							>
-							</input>
-						</div>)
-						:
-						(<div className='editor__title' onClick={switchEditingNoteTitle}>
-							<i className="far fa-edit"></i>
-							<span>{notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}</span>
-						</div>)
-				}
-				<ReactQuill
-					theme='snow'
-					modules={Editor.modules}
-					value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].text : ''}
-					onKeyUp={(e) => {
-						if (selectedNoteIndex || selectedNoteIndex === 0) {
-							updateNoteText(e.target.innerHTML);
-						} else {
-							const newNote = {
-								title: '',
-								text: e.target.innerHTML,
-								createAt: Date.now()
-							}
-
-							createNewNote(newNote);
-							selectCurrentNote(0);
+									createNewNote(newNote);
+									selectCurrentNote(0);
+								}
+							}}
+						>
+						</input>
+					</div>)
+					:
+					(<div className='editor__title' onClick={switchEditingNoteTitle}>
+						<i className="far fa-edit"></i>
+						<span>{notes[selectedNoteIndex] ? notes[selectedNoteIndex].title : ''}</span>
+					</div>)
+			}
+			<ReactQuill
+				theme='snow'
+				modules={Editor.modules}
+				value={notes[selectedNoteIndex] ? notes[selectedNoteIndex].text : ''}
+				onKeyUp={(e) => {
+					if (selectedNoteIndex || selectedNoteIndex === 0) {
+						updateNoteText(e.target.innerHTML);
+					} else {
+						const newNote = {
+							title: '',
+							text: e.target.innerHTML,
+							createAt: Date.now()
 						}
-					}}
-					onFocus={this.handleFocusOnEditor}
-				/>
-			</div>
-		);
-	}
+
+						createNewNote(newNote);
+						selectCurrentNote(0);
+					}
+				}}
+				onFocus={handleFocusOnEditor}
+			/>
+		</div>
+	);
 };
 
 Editor.modules = {
@@ -113,18 +98,4 @@ Editor.modules = {
 	}
 };
 
-const mapStateToProps = createStructuredSelector({
-	notes: selectNotebookNotes,
-	selectedNoteIndex: selectNotebookSelectedNoteIndex,
-	editingNoteTitle: selectNotebookEditingNoteTitle,
-});
-
-const mapDispatchToProps = dispatch => ({
-	createNewNote: note => dispatch(createNewNote(note)),
-	selectCurrentNote: noteIndex => dispatch(selectCurrentNote(noteIndex)),
-	updateNoteTitle: title => dispatch(updateNoteTitle(title)),
-	updateNoteText: title => dispatch(updateNoteText(title)),
-	switchEditingNoteTitle: () => dispatch(switchEditingNoteTitle()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Editor);
+export default Editor;

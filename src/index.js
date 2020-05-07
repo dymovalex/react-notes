@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
 
 import App from './App';
 
-import store from './redux/store';
+import UserProvider from './providers/user/user.provider';
 
 import './index.css';
-
 
 window.onload = () => {
   const handleResize = () => {
@@ -21,12 +19,12 @@ window.onload = () => {
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <UserProvider>
         <App />
-      </BrowserRouter>
-    </React.StrictMode>
-  </Provider>,
+      </UserProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById('root')
 );

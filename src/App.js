@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
 import Header from './components/header/header.component';
 import Content from './components/content/content.component';
@@ -9,20 +7,22 @@ import SignInAndSignUp from './components/sign-in-and-sign-up/sign-in-and-sign-u
 import Footer from './components/footer/footer.component';
 
 import SignInAndSignUpProvider from './providers/sign-in-and-sign-up/sign-in-and-sign-up.provider';
+import NotebookProvider from './providers/notebook/notebook.provider';
+import SidebarProvider from './providers/sidebar/sidebar.provider';
+import { UserContext } from './providers/user/user.provider';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
-import { setCurrentUser } from './redux/user/user.actions';
-import { selectCurrentUser } from './redux/user/user.selectors';
-
 import './App.scss';
 
-class App extends React.Component {
-  unsubscribeFromAuth = null;
+const App = () => {
+  const { currentUser, setCurrentUser } = useContext(UserContext);
 
-  componentDidMount() {
-    const { setCurrentUser } = this.props;
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  let unsubscribeFromAuth = useRef(null);
+
+  useEffect(() => {
+    console.log('App is mounting', currentUser);
+    unsubscribeFromAuth.current = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
@@ -36,45 +36,36 @@ class App extends React.Component {
         setCurrentUser(userAuth);
       }
     });
-  }
+    return () => {
+      unsubscribeFromAuth();
+    }
+  }, []);
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
-
-  render() {
-    const { currentUser } = this.props;
-
-    return (
-      <div className='app-container'>
+  return (
+    <div className='app-container'>
+      <SidebarProvider>
         <Header />
         <Switch>
-          <Route exact path='/' component={Content} />
-          <Route
-            path='/signin'
-            render={() =>
-              currentUser ? (
-                <Redirect to='/' />
-              ) : (
-                  <SignInAndSignUpProvider>
-                    <SignInAndSignUp />
-                  </SignInAndSignUpProvider>
-                )
-            }
-          />
+          <NotebookProvider>
+            <Route exact path='/' component={Content} />
+            <Route
+              path='/signin'
+              render={() =>
+                currentUser ? (
+                  <Redirect to='/' />
+                ) : (
+                    <SignInAndSignUpProvider>
+                      <SignInAndSignUp />
+                    </SignInAndSignUpProvider>
+                  )
+              }
+            />
+          </NotebookProvider>
         </Switch>
-        <Footer />
-      </div>
-    );
-  }
+      </SidebarProvider>
+      <Footer />
+    </div>
+  );
 }
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

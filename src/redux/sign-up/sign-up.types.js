@@ -1,7 +1,0 @@
-const SignUpActionTypes = {
-  HANDLE_INPUT_CHANGE: 'HANDLE_INPUT_CHANGE',
-  SIGN_UP_SUCCESS: 'SIGN_UP_SUCCESS',
-  SIGN_UP_FAILURE: 'SIGN_UP_FAILURE',
-};
-
-export default SignUpActionTypes;
