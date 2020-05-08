@@ -8,6 +8,8 @@ import SignUp from '../sign-up/sign-up.component';
 import { handleResize } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.actions';
 import { selectMobileView, selectSignInIsShown } from '../../redux/sign-in-and-sign-up/sign-in-and-sign-up.selectors';
 
+import { debounce } from '../../redux/notebook/notebook.utils';
+
 import './sign-in-and-sign-up.styles.scss';
 
 class SignInAndSignUp extends React.Component {
@@ -47,8 +49,9 @@ const mapStateToProps = createStructuredSelector({
   signInIsShown: selectSignInIsShown,
 });
 
-const mapDispatchToProps = dispatch => ({
-  handleResize: () => dispatch(handleResize()),
-});
+const mapDispatchToProps = dispatch => {
+  const debouncedHandleResize = debounce(() => dispatch(handleResize()), 200);
+  return () => ({ handleResize: debouncedHandleResize });
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInAndSignUp);
