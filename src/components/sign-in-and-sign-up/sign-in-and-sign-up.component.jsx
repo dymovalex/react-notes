@@ -3,6 +3,8 @@ import React from 'react';
 import SignIn from '../sign-in/sign-in.component';
 import SignUp from '../sign-up/sign-up.component';
 
+import { debounce } from '../note/note.utils';
+
 import './sign-in-and-sign-up.styles.scss';
 
 class SignInAndSignUp extends React.Component {
@@ -24,7 +26,8 @@ class SignInAndSignUp extends React.Component {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  handleResize = () => {
+  handleResize = debounce(() => {
+    console.log('Resizing!')
     if (!this.state.mobileView && window.innerWidth < 910) {
       this.setState({
         mobileView: true
@@ -35,13 +38,13 @@ class SignInAndSignUp extends React.Component {
         mobileView: false
       });
     }
-  }
+  }, 200);
 
   singInSignUpSwitcher = () => {
     this.setState(state => ({
       signInIsShown: !state.signInIsShown
     }));
-  }
+  };
 
   render() {
     return (
