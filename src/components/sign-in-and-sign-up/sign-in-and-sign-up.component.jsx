@@ -27,7 +27,6 @@ class SignInAndSignUp extends React.Component {
   }
 
   handleResize = debounce(() => {
-    console.log('Resizing!')
     if (!this.state.mobileView && window.innerWidth < 910) {
       this.setState({
         mobileView: true
