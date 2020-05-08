@@ -1,10 +1,9 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 
 import { UserContext } from '../user/user.provider';
 import { SidebarContext } from '../sidebar/sidebar.provider';
 
 import { getNotesRef } from '../../firebase/firebase.utils';
-import { debounce } from './notebook.utils';
 
 export const NotebookContext = createContext();
 
@@ -19,11 +18,19 @@ const NotebookProvider = ({ children }) => {
   const { currentUser } = useContext(UserContext);
   const { toggleSidebar } = useContext(SidebarContext);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      updateFirebase();
+    }, 2000);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [notes]);
+
   const createNewNote = newNote => {
     setNotes([newNote, ...notes]);
     setAddingNote(false);
     setNewNoteTitle('');
-    updateFirebase();
   };
 
   const updateNoteTitle = title => {
@@ -36,7 +43,6 @@ const NotebookProvider = ({ children }) => {
       },
       ...notes.slice(selectedNoteIndex + 1)]
     );
-    updateFirebase();
   };
 
   const updateNoteText = text => {
@@ -49,7 +55,6 @@ const NotebookProvider = ({ children }) => {
       },
       ...notes.slice(selectedNoteIndex + 1)]
     );
-    updateFirebase();
   };
 
   const deleteNote = indexOfNoteToDelete => {
@@ -57,7 +62,6 @@ const NotebookProvider = ({ children }) => {
       [...notes.slice(0, indexOfNoteToDelete),
       ...notes.slice(indexOfNoteToDelete + 1)]
     );
-    updateFirebase();
   };
 
   const selectCurrentNote = noteIndex => {
@@ -93,7 +97,7 @@ const NotebookProvider = ({ children }) => {
     }
   };
 
-  const updateFirebase = debounce(async () => {
+  const updateFirebase = async () => {
     try {
       if (currentUser) {
         const notesRef = await getNotesRef(currentUser.id);
@@ -103,7 +107,7 @@ const NotebookProvider = ({ children }) => {
     } catch (error) {
       console.log(error.message);
     }
-  }, 2000);
+  };
 
   return (
     <NotebookContext.Provider
